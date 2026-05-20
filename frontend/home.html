@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portale dell'Automobilista</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;color:#333;background:#fff;font-size:14px}
+a{text-decoration:none;color:inherit}
+
+/* ── Top utility bar ── */
+#top-bar{background:#003087;color:#fff;font-size:11px;padding:4px 0}
+#top-bar .inner{max-width:980px;margin:0 auto;padding:0 14px;display:flex;justify-content:space-between;align-items:center}
+#top-bar a{color:#aac4f0;margin-left:10px;font-size:11px}
+#top-bar a:hover{color:#fff}
+
+/* ── Header ── */
+#header{background:#fff;border-bottom:1px solid #ddd;padding:10px 0}
+#header .inner{max-width:980px;margin:0 auto;padding:0 14px;display:flex;align-items:center;gap:14px}
+#logo-img{height:60px}
+#logo-text{line-height:1.3}
+#logo-text .ministry{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.3px}
+#logo-text .portal-name{font-size:18px;font-weight:700;color:#003087}
+#logo-text .portal-sub{font-size:11px;color:#888}
+
+/* ── Nav ── */
+#nav-main{background:#003087}
+#nav-main .inner{max-width:980px;margin:0 auto;padding:0 14px;display:flex}
+#nav-main a{display:block;padding:10px 14px;color:#cde;font-size:13px;font-weight:700;letter-spacing:.2px;transition:background .15s}
+#nav-main a:hover,#nav-main a.active{background:#0050b3;color:#fff}
+
+/* ── Bar serv ── */
+#bar-serv{background:#444646;height:36px;position:relative}
+#bar-serv .inner{max-width:980px;margin:0 auto;padding:0 14px;height:100%;display:flex;align-items:center;justify-content:flex-end}
+#login{display:flex;align-items:center;gap:6px}
+.btn-accedi{padding:4px 14px;background:#0066cc;color:#fff;border:1px solid #005bb0;border-radius:2px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.3px;text-transform:uppercase}
+.btn-accedi:hover{background:#005bb0}
+.btn-iscriviti{padding:4px 14px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:2px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.3px;text-transform:uppercase}
+.btn-iscriviti:hover{background:rgba(255,255,255,.28)}
+/* Authenticated bar */
+#auth-bar{display:none;align-items:center;gap:5px}
+#auth-bar .welcome{color:#fff;font-size:90%;font-weight:bold;margin-right:6px;white-space:nowrap}
+#auth-bar .welcome strong{color:#009bc9}
+.btn-top{padding:3px 10px;font-size:79%;font-weight:700;letter-spacing:.4px;border:1px solid rgba(255,255,255,.35);border-radius:2px;cursor:pointer;color:#fff;text-transform:uppercase;white-space:nowrap;line-height:1.6;font-family:inherit}
+.btn-home-t{background:#0066cc;border-color:#005bb0}
+.btn-home-t:hover{background:#005bb0}
+.btn-prof-t{background:rgba(255,255,255,.18)}
+.btn-prof-t:hover{background:rgba(255,255,255,.3)}
+.btn-esci-t{background:rgba(255,255,255,.10)}
+.btn-esci-t:hover{background:#c0392b;border-color:#c0392b}
+
+/* ── Hero ── */
+#hero{background:linear-gradient(135deg,#003087 0%,#0050b3 60%,#0066cc 100%);color:#fff;padding:50px 14px 44px;text-align:center}
+#hero h1{font-size:2rem;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+#hero p{font-size:1rem;color:#b8d4f8;max-width:600px;margin:0 auto 28px;line-height:1.6}
+#hero .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-btn{padding:11px 28px;border-radius:4px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.2px;border:2px solid transparent;transition:all .15s}
+.cta-primary{background:#fff;color:#003087;border-color:#fff}
+.cta-primary:hover{background:#e8f0fe;border-color:#e8f0fe}
+.cta-secondary{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.cta-secondary:hover{background:rgba(255,255,255,.12);border-color:#fff}
+
+/* ── Services ── */
+#services{background:#f4f6fb;padding:40px 14px}
+#services .inner{max-width:980px;margin:0 auto}
+#services h2{font-size:1.2rem;font-weight:700;color:#003087;margin-bottom:22px;text-align:center}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+.service-card{background:#fff;border-radius:6px;padding:22px 16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.08);cursor:pointer;transition:box-shadow .15s,transform .12s;border-top:3px solid #003087}
+.service-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.13);transform:translateY(-2px)}
+.service-icon{font-size:2rem;margin-bottom:10px;display:block}
+.service-card h3{font-size:.88rem;font-weight:700;color:#003087;margin-bottom:6px}
+.service-card p{font-size:.77rem;color:#666;line-height:1.5}
+
+/* ── Info strip ── */
+#info-strip{background:#003087;color:#fff;padding:28px 14px}
+#info-strip .inner{max-width:980px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.info-block h4{font-size:.88rem;font-weight:700;margin-bottom:6px;color:#aac4f0}
+.info-block p{font-size:.8rem;color:#cde;line-height:1.5}
+
+/* ── Footer ── */
+footer{background:#222;color:#aaa;padding:20px 14px;font-size:12px;text-align:center}
+footer a{color:#888;margin:0 8px}
+footer a:hover{color:#ccc}
+footer .footer-row{margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div id="top-bar">
+  <div class="inner">
+    <span>Ministero delle Infrastrutture e dei Trasporti</span>
+    <span>
+      <a href="#">Accessibilità</a>
+      <a href="#">Mappa del sito</a>
+      <a href="#">Contatti</a>
+    </span>
+  </div>
+</div>
+
+<!-- Header -->
+<div id="header">
+  <div class="inner">
+    <svg id="logo-img" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <rect width="60" height="60" rx="4" fill="#003087"/>
+      <text x="30" y="22" text-anchor="middle" font-family="Arial" font-weight="900" font-size="9" fill="#fff">MIT</text>
+      <path d="M10 28 Q30 18 50 28 Q30 38 10 28Z" fill="#0066cc"/>
+      <circle cx="30" cy="28" r="5" fill="#fff"/>
+      <rect x="14" y="36" width="32" height="3" rx="1.5" fill="#aac4f0"/>
+      <rect x="20" y="42" width="20" height="3" rx="1.5" fill="#aac4f0"/>
+    </svg>
+    <div id="logo-text">
+      <div class="ministry">Ministero delle Infrastrutture e dei Trasporti</div>
+      <div class="portal-name">Portale dell'Automobilista</div>
+      <div class="portal-sub">Direzione Generale per la Motorizzazione</div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav id="nav-main">
+  <div class="inner">
+    <a href="#" class="active">Home</a>
+    <a href="#">Chi siamo</a>
+    <a href="#">News e circolari</a>
+    <a href="#">Catalogo prodotti</a>
+    <a href="#">Assistenza</a>
+    <a href="#">Contatti</a>
+    <a href="#">FAQ</a>
+  </div>
+</nav>
+
+<!-- Bar serv -->
+<div id="bar-serv">
+  <div class="inner">
+    <div id="login">
+      <a href="/frontend/login.html"><button class="btn-accedi">Accedi al Portale</button></a>
+      <button class="btn-iscriviti">Iscriviti</button>
+    </div>
+    <div id="auth-bar">
+      <span class="welcome">Benvenuto, <strong id="home-username">—</strong></span>
+      <button class="btn-top btn-home-t" onclick="location.href='/frontend/dashboard.html'">&#8962; HOME</button>
+      <button class="btn-top btn-prof-t" onclick="location.href='/frontend/dashboard.html#profilo'">PROFILO</button>
+      <button class="btn-top btn-esci-t" onclick="doLogout()">ESCI</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<div id="hero">
+  <h1>Portale dell'Automobilista</h1>
+  <p>Accedi ai servizi online del Ministero delle Infrastrutture e dei Trasporti per la gestione di patente, veicoli e pratiche automobilistiche.</p>
+  <div class="cta-row">
+    <a href="/frontend/login.html"><button class="cta-btn cta-primary">Accedi con SPID o CIE</button></a>
+    <a href="#services"><button class="cta-btn cta-secondary">Scopri i servizi</button></a>
+  </div>
+</div>
+
+<!-- Services -->
+<div id="services">
+  <div class="inner">
+    <h2>I nostri servizi</h2>
+    <div class="service-grid">
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128196;</span>
+        <h3>Patente di Guida</h3>
+        <p>Consulta punti, scadenza e categorie della tua patente</p>
+      </div>
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128663;</span>
+        <h3>Veicoli</h3>
+        <p>Visualizza la scheda tecnica e lo stato dei tuoi veicoli registrati</p>
+      </div>
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128179;</span>
+        <h3>Bollo Auto</h3>
+        <p>Verifica e paga il bollo auto in modo rapido e sicuro</p>
+      </div>
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128203;</span>
+        <h3>Revisione</h3>
+        <p>Controlla la scadenza della revisione periodica del tuo veicolo</p>
+      </div>
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128274;</span>
+        <h3>Duplicati</h3>
+        <p>Richiedi duplicati di patente, carta di circolazione e certificati</p>
+      </div>
+      <div class="service-card" onclick="goLogin()">
+        <span class="service-icon">&#128269;</span>
+        <h3>Visure</h3>
+        <p>Effettua visure su veicoli e consultazioni all'Archivio Nazionale</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Info strip -->
+<div id="info-strip">
+  <div class="inner">
+    <div class="info-block">
+      <h4>Accesso sicuro</h4>
+      <p>Accedi con SPID o CIE per autenticarti in modo sicuro e proteggere i tuoi dati personali.</p>
+    </div>
+    <div class="info-block">
+      <h4>Assistenza</h4>
+      <p>Per supporto tecnico o informazioni sui servizi, contatta il nostro Call Center.</p>
+    </div>
+    <div class="info-block">
+      <h4>Aggiornamenti</h4>
+      <p>Resta aggiornato su news, circolari e novità normative del settore automobilistico.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-row">
+    <a href="#">Privacy</a>
+    <a href="#">Note legali</a>
+    <a href="#">Accessibilità</a>
+    <a href="#">Mappa del sito</a>
+    <a href="#">Contatti</a>
+  </div>
+  <div>&copy; Ministero delle Infrastrutture e dei Trasporti — Direzione Generale per la Motorizzazione</div>
+</footer>
+
+<script>
+function goLogin() { location.href = '/frontend/login.html'; }
+
+function doLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  document.getElementById('auth-bar').style.display = 'none';
+  document.getElementById('login').style.display = 'flex';
+}
+
+(function () {
+  const t = localStorage.getItem('token');
+  const u = localStorage.getItem('user');
+  if (!t || !u) return;
+
+  try {
+    const pl = JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (pl.exp && Date.now() / 1000 > pl.exp) {
+      localStorage.removeItem('token'); localStorage.removeItem('user'); return;
+    }
+  } catch { return; }
+
+  let usr;
+  try { usr = JSON.parse(u); } catch { return; }
+
+  const fn = (usr.name || '').split(' ')[0] || 'Utente';
+  document.getElementById('home-username').textContent = fn;
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('auth-bar').style.display = 'flex';
+})();
+</script>
+</body>
+</html>

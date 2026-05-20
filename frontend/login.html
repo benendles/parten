@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="it" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accesso con SPID/CIE/EIDAS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body { background: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
+
+    .logo-bar { border-bottom: 1px solid #dee2e6; padding: 8px 0; }
+    .logo-img  { max-height: 70px; }
+    .logo-fallback { display: none; font-size: 13px; font-weight: 700; color: #333; }
+
+    #spidBtn, #cieBtn, #eidasBtn { border-radius: 0; font-weight: 600; font-size: .9rem; }
+    #spidBtn.active, #cieBtn.active, #eidasBtn.active {
+      background: #004B9C; border-color: #004B9C; color: #fff;
+    }
+
+    .italia-it-button {
+      display: inline-flex; align-items: center; background: #004B9C;
+      color: #fff !important; border-radius: 4px; padding: 0;
+      text-decoration: none !important; font-size: 1rem; font-weight: 700;
+      overflow: hidden; cursor: pointer; border: none;
+    }
+    .italia-it-button:hover { background: #003a7a; }
+    .italia-it-button-icon {
+      background: #fff; width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .italia-it-button-icon img { width: 32px; height: 32px; }
+    .italia-it-button-text { padding: 0 18px; font-size: 1.1rem; }
+
+    .button-cie {
+      display: inline-flex; align-items: center; background: #004B9C;
+      color: #fff !important; border-radius: 4px; padding: 0;
+      text-decoration: none !important; font-weight: 700; overflow: hidden; cursor: pointer;
+    }
+    .button-cie:hover { background: #003a7a; }
+    .button-cie .italia-it-button-icon { background: #fff; }
+    .button-cie .italia-it-button-text { padding: 0 18px; font-size: 1.1rem; }
+
+    .button-eidas { background: #003399; }
+    .button-eidas:hover { background: #002277; }
+
+    .cie-icon-img  { width: 40px; height: 40px; object-fit: contain; }
+    .eidas-icon-img { width: 36px; height: 36px; object-fit: contain; }
+
+    .spid-idp-button { position: relative; margin-top: 4px; }
+    .spid-idp-button-menu {
+      list-style: none; padding: 0; margin: 0;
+      border: 1px solid #ccc; border-radius: 4px; background: #fff;
+      display: none; min-width: 210px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.15);
+      position: absolute; left: 0; z-index: 100; top: 0;
+    }
+    .spid-idp-button-menu.open { display: block; }
+    .spid-idp-button-link a {
+      display: flex; align-items: center; padding: 10px 14px;
+      text-decoration: none; color: #222;
+      border-bottom: 1px solid #eee; gap: 10px; font-size: .9rem;
+    }
+    .spid-idp-button-link:last-child a { border-bottom: none; }
+    .spid-idp-button-link a:hover { background: #f0f4ff; }
+
+    .prov-logo {
+      width: 36px; height: 24px; border-radius: 3px; font-size: .65rem;
+      font-weight: 900; color: #fff; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; letter-spacing: -.5px;
+    }
+    .pl-infocert   { background: #003087; }
+    .pl-teamsystem { background: #e85d00; }
+    .pl-etna       { background: #c0392b; }
+    .pl-poste      { background: #ffcc00; color: #333; }
+    .pl-intesi     { background: #1a237e; }
+    .pl-spidItalia { background: #009246; }
+    .pl-namirial   { background: #0d47a1; }
+    .pl-aruba      { background: #c62828; }
+    .pl-sielte     { background: #01579b; }
+    .pl-lepida     { background: #2e7d32; }
+
+    .vl { border-left: 1px solid #ccc; height: 52px; margin: 0 12px; }
+    .border-left-custom { border-left: 4px solid #004B9C !important; }
+    .info-bg { background-color: #e8ecf4; }
+    .footer-bg { background-color: #e8ecf4; }
+    .btn-info-text { font-size: 18px; }
+    .link-blue { color: #0b6fb6; }
+    .big-heading { font-size: 1.9rem; font-weight: 700; }
+    .panel-hidden { display: none; }
+    .footer-imgs img { max-height: 40px; }
+  </style>
+</head>
+<body>
+
+<div class="container p-2 p-xl-5">
+
+  <!-- MIT Logo -->
+  <div class="mb-3 mt-4 d-flex justify-content-end logo-bar pb-2">
+    <a class="mr-2 img-fluid" rel="noopener" target="_blank"
+       title="Ministero delle Infrastrutture e dei Trasporti" href="https://www.mit.gov.it/">
+      <img src="https://idpciam.servizidt.it/customlogin/img/logo-MIT-f50a4379ba9f6543099c3a18bbb2547d.png"
+           class="logo-img"
+           alt="Ministero delle Infrastrutture e dei Trasporti"
+           onerror="this.classList.add('d-none');this.nextElementSibling.classList.remove('logo-fallback');">
+      <span class="logo-fallback">Ministero delle<br>Infrastrutture e dei Trasporti</span>
+    </a>
+  </div>
+
+  <!-- Main card -->
+  <div class="justify-content-center align-items-center border rounded p-xl-3 p-2">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="bd-highlight">
+          <h1 class="big-heading font-weight-bold">Accesso all'area riservata</h1>
+        </div>
+
+        <div class="bd-highlight mt-3">
+          <p class="font-weight-bold">Seleziona metodo di Login</p>
+          <div>
+            <button type="button" id="spidBtn"  class="btn btn-outline-primary active">SPID</button>
+            <button type="button" id="cieBtn"   class="btn btn-outline-primary">CIE</button>
+            <button type="button" id="eidasBtn" class="btn btn-outline-primary">eIDAS</button>
+          </div>
+        </div>
+
+        <!-- ─── SPID panel ─── -->
+        <div id="divSpid">
+          <div class="mb-2 mt-3 bd-highlight">
+            <p class="font-weight-bold">Accedi con le credenziali SPID</p>
+          </div>
+
+          <div class="mb-2 d-flex flex-row flex-wrap align-items-center">
+            <div class="bd-highlight">
+              <form id="spidAcces" name="spid_idp_access" action="#" method="post">
+                <a href="#" class="italia-it-button" id="spidLoginBtn"
+                   aria-haspopup="true" aria-expanded="false">
+                  <span class="italia-it-button-icon">
+                    <img src="https://idpciam.servizidt.it/customlogin/img/spid-ico-circle-bb-14efd2a91536b65a583511af75d8bf47.svg"
+                         onerror="this.src='https://www.spid.gov.it/wp-content/uploads/2020/03/logo-spid.png';this.onerror=null;"
+                         alt="SPID">
+                  </span>
+                  <span class="italia-it-button-text">Entra con SPID</span>
+                </a>
+
+                <div class="spid-idp-button" id="spidDropdown">
+                  <ul id="spid-idp-list" class="spid-idp-button-menu">
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/infocert">
+                        <span class="prov-logo pl-infocert">IC</span>INFOCERT ID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/teamsystem">
+                        <span class="prov-logo pl-teamsystem">TS</span>TeamSystem ID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/etna">
+                        <span class="prov-logo pl-etna">ET</span>etnaID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/poste">
+                        <span class="prov-logo pl-poste">PI</span>PosteID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/intesi">
+                        <span class="prov-logo pl-intesi">IO</span>INTESI GROUP
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/spidItalia">
+                        <span class="prov-logo pl-spidItalia">SI</span>SpidItalia
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/namirial">
+                        <span class="prov-logo pl-namirial">NA</span>Namirial ID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/aruba">
+                        <span class="prov-logo pl-aruba">AR</span>aruba.it ID
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/sielte">
+                        <span class="prov-logo pl-sielte">SE</span>SIELTE id
+                      </a>
+                    </li>
+                    <li class="spid-idp-button-link">
+                      <a href="/spid-provider/lepida">
+                        <span class="prov-logo pl-lepida">LE</span>Lepida ID
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </form>
+            </div>
+
+            <div class="vl"></div>
+
+            <div class="bd-highlight">
+              <button type="button" onclick="window.open('https://www.spid.gov.it','_blank');"
+                      class="btn btn-outline-secondary btn-lg text-left">
+                <i class="fas fa-info-circle fa-lg" aria-hidden="true"></i>
+                <span class="btn-info-text"> Maggiori informazioni su SPID</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-4 mt-1 bd-highlight">
+            <a rel="noopener" target="_blank" class="link-blue"
+               href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a>
+          </div>
+
+          <div class="mb-4 mt-2 bd-highlight">
+            <p class="font-weight-bold mb-0">Cos'è SPID?</p>
+            <p>SPID è il sistema di accesso che consente di utilizzare, con un'identità digitale unica, i servizi online
+              della Pubblica Amministrazione e dei privati accreditati. Se sei già in possesso di un'identità digitale,
+              accedi con le credenziali del tuo gestore. Se non hai ancora un'identità digitale, richiedila ad uno dei gestori.</p>
+          </div>
+
+          <div class="p-3 text-left border-left-custom info-bg">
+            <h6 class="mb-0">
+              <i class="fas fa-info-circle mr-3 fa-lg" aria-hidden="true"></i>
+              Per informazioni generali puoi contattare l'<span class="font-weight-bold">helpdesk</span>
+              AgiD o richiedere assistenza al tuo Identity Provider
+            </h6>
+          </div>
+        </div>
+
+        <!-- ─── CIE panel ─── -->
+        <div id="divCie" class="panel-hidden">
+          <div class="mb-2 mt-3 bd-highlight">
+            <p class="font-weight-bold">Accedi con le credenziali CIE</p>
+          </div>
+
+          <div class="mb-2 d-flex flex-row flex-wrap align-items-center">
+            <div class="bd-highlight">
+              <a href="/spid-provider/cie" class="button-cie">
+                <span class="italia-it-button-icon">
+                  <img src="https://idpciam.servizidt.it/customlogin/img/logo_entra_con_CIE.png"
+                       class="cie-icon-img" alt="CIE"
+                       onerror="this.classList.add('d-none');">
+                </span>
+                <span class="italia-it-button-text">Entra con CIE</span>
+              </a>
+            </div>
+
+            <div class="vl"></div>
+
+            <div class="bd-highlight">
+              <button type="button" onclick="window.open('https://www.cartaidentita.interno.gov.it/','_blank');"
+                      class="btn btn-outline-secondary btn-lg text-left">
+                <i class="fas fa-info-circle fa-lg" aria-hidden="true"></i>
+                <span class="btn-info-text"> Maggiori informazioni su CIE</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-4 mt-1 bd-highlight">
+            <a rel="noopener" target="_blank" class="link-blue"
+               href="https://www.cartaidentita.interno.gov.it/i/">Non hai CIE?</a>
+          </div>
+
+          <div class="mb-4 mt-2 bd-highlight">
+            <p class="font-weight-bold mb-0">Cos'è la CIE?</p>
+            <p>La Carta di Identità Elettronica (CIE) è il documento personale che attesta l'identità del cittadino.
+              Dotata di Microprocessore, oltre a comprovare l'identità personale, permette l'accesso ai servizi digitali
+              della Pubblica Amministrazione.</p>
+          </div>
+
+          <div class="p-3 text-left border-left-custom info-bg">
+            <h6 class="mb-0">
+              <i class="fas fa-info-circle mr-3 fa-lg" aria-hidden="true"></i>
+              Le CIE valide per l'accesso sono solo quelle rilasciate a partire dal luglio 2016 con un numero seriale,
+              presente in alto sulla carta, che inizia con la lettera 'C'.
+            </h6>
+          </div>
+        </div>
+
+        <!-- ─── eIDAS panel ─── -->
+        <div id="divEidas" class="panel-hidden">
+          <div class="mb-2 mt-3 bd-highlight">
+            <p class="font-weight-bold">Accedi con le credenziali eIDAS</p>
+          </div>
+
+          <div class="mb-2 d-flex flex-row flex-wrap align-items-center">
+            <div class="bd-highlight">
+              <a href="/spid-provider/eidas" class="italia-it-button button-eidas">
+                <span class="italia-it-button-icon">
+                  <img src="https://idpciam.servizidt.it/customlogin/img/login-with-eidas-icon-21bca6cf7be7a9b7993ab60e1b88f002.svg"
+                       class="eidas-icon-img" alt="eIDAS"
+                       onerror="this.classList.add('d-none');">
+                </span>
+                <span class="italia-it-button-text">Entra con eIDAS</span>
+              </a>
+            </div>
+
+            <div class="vl"></div>
+
+            <div class="bd-highlight">
+              <button type="button" onclick="window.open('https://eid.gov.it/','_blank');"
+                      class="btn btn-outline-secondary btn-lg text-left">
+                <i class="fas fa-info-circle fa-lg" aria-hidden="true"></i>
+                <span class="btn-info-text"> Maggiori informazioni su eIDAS</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-4 mt-1 bd-highlight">
+            <a rel="noopener" target="_blank" class="link-blue"
+               href="https://www.agid.gov.it/it/agenzia/stampa-e-comunicazione/notizie/2019/02/05/attivare-il-login-eidas-ecco-guida-pa-cura-agid">Non hai eIDAS?</a>
+          </div>
+
+          <div class="mb-4 mt-2 bd-highlight">
+            <p class="font-weight-bold mb-0">Cos'è eIDAS?</p>
+            <p>Il regolamento eIDAS fornisce una base normativa per le interazioni elettroniche fra cittadini, imprese
+              e pubbliche amministrazioni incrementando la sicurezza e l'efficacia dei servizi online nell'Unione Europea.</p>
+          </div>
+
+          <div class="p-3 text-left border-left-custom info-bg">
+            <h6 class="mb-0">
+              <i class="fas fa-info-circle mr-3 fa-lg" aria-hidden="true"></i>
+              Per informazioni generali puoi contattare l'<span class="font-weight-bold">helpdesk</span>
+              AgiD o richiedere assistenza al tuo Identity Provider
+            </h6>
+          </div>
+        </div>
+
+        <!-- Footer images -->
+        <div class="p-4 text-left mt-3 footer-imgs footer-bg">
+          <a rel="noopener" target="_blank" href="https://www.cciss.it/web/cciss/">
+            <img src="https://idpciam.servizidt.it/customlogin/img/viaggiare-informati-on.png"
+                 alt="Viaggiare Informati" class="mr-3"
+                 onerror="this.classList.add('d-none');">
+          </a>
+          <a rel="noopener" target="_blank" href="https://carburanti.mise.gov.it/OssPrezziSearch/">
+            <img src="https://idpciam.servizidt.it/customlogin/img/osservaprezzi-carburanti-on.png"
+                 alt="Osservaprezzi Carburante" class="mr-3"
+                 onerror="this.classList.add('d-none');">
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<footer></footer>
+
+<script>
+  document.getElementById('spidBtn').addEventListener('click', function () { setTab('spid'); });
+  document.getElementById('cieBtn').addEventListener('click',  function () { setTab('cie'); });
+  document.getElementById('eidasBtn').addEventListener('click',function () { setTab('eidas'); });
+
+  function setTab(tab) {
+    document.getElementById('divSpid').classList.toggle('panel-hidden',  tab !== 'spid');
+    document.getElementById('divCie').classList.toggle('panel-hidden',   tab !== 'cie');
+    document.getElementById('divEidas').classList.toggle('panel-hidden', tab !== 'eidas');
+    ['spid','cie','eidas'].forEach(function(t) {
+      var btn = document.getElementById(t + 'Btn');
+      btn.classList.toggle('active',      t === tab);
+      btn.classList.toggle('btn-primary', t === tab);
+    });
+    closeDropdown();
+  }
+
+  var dropdown = document.getElementById('spid-idp-list');
+
+  document.getElementById('spidLoginBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    dropdown.classList.toggle('open');
+    this.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+  });
+
+  function closeDropdown() {
+    dropdown.classList.remove('open');
+    document.getElementById('spidLoginBtn').setAttribute('aria-expanded', 'false');
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!document.getElementById('spidLoginBtn').contains(e.target) &&
+        !document.getElementById('spidDropdown').contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  if (localStorage.getItem('token')) {
+    window.location.href = 'dashboard.html';
+  }
+</script>
+</body>
+</html>

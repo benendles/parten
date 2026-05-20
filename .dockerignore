@@ -1,0 +1,7 @@
+backend/node_modules
+backend/.env
+backend/database.sqlite
+ilportaledellautomobilista/hts-cache
+ilportaledellautomobilista/cookies.txt
+ilportaledellautomobilista/hts-log.txt
+*.md

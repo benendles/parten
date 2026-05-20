@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    image: node:18-alpine
+    working_dir: /app/backend
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - JWT_SECRET=portale-automobilista-secret-key-2024
+      - NODE_ENV=development
+    command: sh -c "npm install && npm start"
+    networks:
+      - portale-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "5500:80"
+    depends_on:
+      - backend
+    networks:
+      - portale-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/login.html"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  portale-network:
+    driver: bridge

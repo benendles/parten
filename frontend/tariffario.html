@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tariffario — Portale dell'Automobilista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/html/css/main.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1341556890000"/>
+<link rel="stylesheet" type="text/css" href="/servizialcittadino/theme/portaleAutomobilista.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1776712629000"/>
+<link rel="stylesheet" type="text/css" href="/pda-theme/css/main.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1668629448000"/>
+<style>
+body, button, input, select, textarea { font-family:'Titillium Web',Arial,sans-serif; }
+#login      { height:auto !important; }
+#login-user { min-width:0 !important; }
+#btn-autenticato { float:right; display:flex; align-items:center; gap:5px; margin:4px 10px 0 0; }
+.btn-top { padding:4px 13px; font-size:11px; font-weight:700; letter-spacing:.5px; border-radius:3px; cursor:pointer; color:#fff; text-transform:uppercase; background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%); white-space:nowrap; line-height:1.7; font-family:inherit; border:1px solid rgba(0,0,0,.30); box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.28); transition:filter .15s; }
+.btn-top:hover { filter:brightness(1.13); }
+.btn-home { background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%); border-color:#0c52a0; }
+.btn-home:hover { filter:brightness(1.12); }
+.btn-esci { background:linear-gradient(to bottom,#999 0%,#6e6e6e 100%); border-color:#555; }
+.btn-esci:hover { background:linear-gradient(to bottom,#c0392b 0%,#962d22 100%); border-color:#7a1f16; filter:none; }
+.clr { clear:both; }
+#visore-est { overflow:hidden; }
+#visore { height:120px; background:linear-gradient(155deg,#1060b0 0%,#3a96d8 45%,#55b0dc 70%,#1a5f9f 100%); position:relative; }
+#visore::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-25deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 80px); }
+ul.sub2 { z-index:999999 !important; }
+#pagina { padding:22px 0 36px; background:#f2f3f3; }
+#pagina > .contenitore { display:flex; gap:18px; align-items:flex-start; }
+#col-sx { width:188px; flex-shrink:0; }
+#col-dx { flex:1; min-width:0; }
+.box-cittadino { background:#fff; border:1px solid #ddd; border-top:3px solid #0066cc; margin-bottom:14px; }
+.box-cittadino h3 { background:#0066cc; color:#fff; font-size:11px; font-weight:700; padding:9px 14px; margin:0; text-transform:uppercase; letter-spacing:.3px; font-family:'Titillium Web',Arial,sans-serif; }
+.box-cittadino ul { list-style:none; margin:0; padding:0; }
+.box-cittadino ul li a { display:block; padding:8px 14px; font-size:11px; color:#333; text-decoration:none; border-bottom:1px solid #f0f0f0; transition:background .15s,color .15s,padding-left .15s; font-family:'Titillium Web',Arial,sans-serif; }
+.box-cittadino ul li a:hover { background:#f0f5ff; padding-left:18px; color:#0066cc; }
+.box-cittadino ul li.arrow a { color:#0066cc; font-weight:700; }
+.box-cittadino ul li.arrow a::before { content:'▸ '; }
+.box-cittadino ul li.active a { color:#0066cc; font-weight:700; padding-left:18px; background:#f0f5ff; }
+.box-cittadino ul li.active a::before { content:'▸ '; }
+.breadcrumb { font-size:11px; color:#888; margin-bottom:14px; font-family:'Titillium Web',Arial,sans-serif; }
+.breadcrumb a { color:#0066cc; text-decoration:none; }
+.breadcrumb span { margin:0 5px; }
+.content-card { background:#fff; border:1px solid #ddd; border-top:3px solid #0066cc; padding:24px 28px; margin-bottom:18px; }
+.content-card h1 { font-size:20px; color:#003087; font-weight:700; margin-bottom:10px; border-bottom:2px solid #e8edf5; padding-bottom:10px; font-family:'Titillium Web',Arial,sans-serif; }
+.content-card h2 { font-size:15px; color:#0066cc; font-weight:700; margin:22px 0 10px; padding-left:10px; border-left:3px solid #0066cc; font-family:'Titillium Web',Arial,sans-serif; }
+.content-card p { font-size:13px; color:#444; line-height:1.7; margin-bottom:10px; font-family:'Titillium Web',Arial,sans-serif; }
+.tariff-table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:12px; font-family:'Titillium Web',Arial,sans-serif; }
+.tariff-table th { background:#003087; color:#fff; padding:9px 12px; text-align:left; font-weight:700; font-size:11px; letter-spacing:.2px; font-family:'Titillium Web',Arial,sans-serif; }
+.tariff-table th.right { text-align:right; }
+.tariff-table td { padding:9px 12px; border-bottom:1px solid #eee; vertical-align:top; font-family:'Titillium Web',Arial,sans-serif; }
+.tariff-table td.right { text-align:right; font-weight:700; white-space:nowrap; }
+.tariff-table tr:hover td { background:#f5f8ff; }
+.tariff-table tr:last-child td { border-bottom:none; }
+.tariff-table .code { font-family:monospace; font-size:11px; color:#666; }
+.info-box { background:#e8f0fe; border-left:4px solid #0066cc; padding:14px 18px; margin:16px 0; border-radius:0 3px 3px 0; }
+.info-box p { font-size:13px; color:#003087; margin:0; line-height:1.6; font-family:'Titillium Web',Arial,sans-serif; }
+.warn-box { background:#fff8e1; border-left:4px solid #f9a825; padding:14px 18px; margin:16px 0; border-radius:0 3px 3px 0; }
+.warn-box p { font-size:13px; color:#5d4037; margin:0; line-height:1.6; font-family:'Titillium Web',Arial,sans-serif; }
+.pagopa-steps { margin:8px 0 12px 20px; font-size:13px; color:#444; line-height:1.8; font-family:'Titillium Web',Arial,sans-serif; }
+</style>
+</head>
+
+<body class="yui3-skin-sam controls-visible site">
+
+<div id="accordion">
+<div id="bar-serv">
+    <div class="contenitore">
+        <div id="menu-serv">
+            <h2 class="nascosto">Menu di servizio</h2>
+            <ul>
+                <li><a href="/web/portale-automobilista/chi-siamo" class="fNiv"> Chi siamo</a></li>
+                <li><a href="/web/portale-automobilista/news-e-circolari" class="fNiv"> News e circolari</a></li>
+                <li><a href="/web/portale-automobilista/assistenza" class="fNiv"> Assistenza</a></li>
+                <li><a href="/web/portale-automobilista/contatti" class="fNiv"> Contatti</a></li>
+                <li><a href="/web/portale-automobilista/faq" class="fNiv"> FAQ</a></li>
+            </ul>
+        </div>
+        <div id="login">
+            <div id="login-user">Benvenuto, <strong id="nome-utente">—</strong></div>
+            <div id="btn-autenticato">
+                <button type="button" class="btn-top btn-home" onclick="location.href='/frontend/dashboard.html'">&#8962; HOME</button>
+                <button type="button" class="btn-top" onclick="location.href='/frontend/dashboard.html'">PROFILO</button>
+                <button type="button" class="btn-top btn-esci" onclick="doLogout()">ESCI</button>
+            </div>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+
+<div class="contenitore">
+    <div id="testa">
+        <a href="/web/portale-automobilista">
+            <img id="logo-portale" src="/pda-theme/images/pda/logo-portale.png?2" alt="Il portale dell'Automobilista"/>
+        </a>
+        <a href="https://www.mit.gov.it">
+            <img id="logo-ministero" src="/pda-theme/images/pda/logo-ministero.png?3" alt="Ministero delle Infrastrutture e dei Trasporti"/>
+        </a>
+    </div>
+</div>
+
+<div id="men-sez-est">
+    <div id="men-sez">
+        <h2 class="nascosto">Sezioni del sito</h2>
+        <div class="contenitore"><ul id="menu"><li><a href="/web/portale-automobilista/patenti" class="sub"> <strong>Patenti</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/la-patente-di-guida" class="sub"> La patente di guida</a></li><li><a href="/web/portale-automobilista/tutte-le-pratiche" class="sub"> Tutte le pratiche</a></li><li><a href="/web/portale-automobilista/foglio-rosa-e-prove-new" class="sub"> Foglio rosa e prove d'esame</a></li><li><a href="/web/portale-automobilista/patenti-carta-qualificazione-conducente" class="sub"> Carta di Qualificazione del Conducente (CQC)</a></li><li><a href="/web/portale-automobilista/modulistica1" class="sub"> Modulistica</a></li><li><a href="/web/portale-automobilista/patenti-patente-nautica" class="sub"> Patente nautica</a></li><li><a href="/web/portale-automobilista/normativa" class="sub"> Normativa</a></li></ul></li><li><a href="/web/portale-automobilista/veicoli" class="sub"> <strong>Veicoli</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/veicoli/autoveicoli" class="sub"> Autoveicoli</a></li><li><a href="/web/portale-automobilista/veicoli/motocicli" class="sub"> Motocicli</a></li><li><a href="/web/portale-automobilista/veicoli/revisioni" class="sub"> Revisioni</a></li><li><a href="/web/portale-automobilista/veicoli/collaudi" class="sub"> Collaudi</a></li><li><a href="/web/portale-automobilista/modulistica-documento-unico" class="sub"> Documento Unico</a></li></ul></li><li><a href="/web/portale-automobilista/servizi-online" class="sub"> <strong>Servizi Online</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/pagamenti-pagopa" class="sub"> Pagamenti PagoPA</a></li><li><a href="/web/portale-automobilista/gestione-pratiche-online" class="sub"> Gestione Pratiche Online</a></li><li><a href="/web/portale-automobilista/saldo-punti-patente" class="sub"> Saldo punti patente</a></li><li><a href="/web/portale-automobilista/ext/verifica-classe-ambientale-veicolo" class="sub"> Verifica classe ambientale veicolo</a></li><li><a href="/web/portale-automobilista/ext/verifica-copertura-rc" class="sub"> Verifica copertura RCA</a></li></ul></li><li><a href="/web/portale-automobilista/codice-della-strada" class="sub"> <strong>Codice della Strada</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/violazione-e-punti" class="sub"> Violazione e punti</a></li><li><a href="/web/portale-automobilista/censimento-velox" class="sub"> Censimento Velox</a></li></ul></li><li><a href="/web/portale-automobilista/professionisti" class="sub"> <strong>Professionisti</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/professionisti-patentino-adr" class="sub"> Materia ADR-RID-ADN</a></li><li><a href="/web/portale-automobilista/professionisti-atp" class="sub"> Trasporto merci deperibili - ATP</a></li></ul></li><li><a href="/web/portale-automobilista/autotrasporti" class="sub"> <strong>Autotrasporto</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/ricerca-imprese-trasporto-merci" class="sub"> Ricerca Imprese Trasporto Merci</a></li></ul></li><li><a href="/web/portale-automobilista/applicazioni" class="sub"> <strong>App Mobile</strong></a><ul class="sub2"><li><a href="/web/portale-automobilista/ipatente" class="sub"> iPatente</a></li></ul></li></ul></div>
+    </div>
+</div>
+</div><!-- /#accordion -->
+
+<div id="visore-est" class="accordion">
+    <div id="visore"></div>
+</div>
+
+<div id="pagina">
+<div class="contenitore">
+
+    <div id="col-sx">
+        <div class="box-cittadino">
+            <h3>Cittadino</h3>
+            <ul>
+                <li class="arrow"><a href="/frontend/dashboard.html">Profilo</a></li>
+                <li class="arrow"><a href="/frontend/dashboard.html">Accesso ai servizi</a></li>
+                <li><a href="/frontend/guida-servizi.html">Guida ai servizi</a></li>
+                <li><a href="/frontend/modulistica.html">Modulistica</a></li>
+                <li class="active"><a href="/frontend/tariffario.html">Tariffario</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="col-dx">
+        <div class="breadcrumb">
+            <a href="/web/portale-automobilista">Home</a><span>›</span>
+            <a href="/frontend/dashboard.html">Cittadino</a><span>›</span>
+            Tariffario
+        </div>
+
+        <div class="content-card">
+            <h1>Tariffario</h1>
+            <p>Di seguito sono riportate le tariffe vigenti per le principali pratiche automobilistiche gestite dalla Motorizzazione Civile. I pagamenti devono essere effettuati tramite il sistema <strong>PagoPA</strong>.</p>
+
+            <div class="warn-box">
+                <p><strong>Attenzione:</strong> Le tariffe indicate sono comprensive dei diritti di motorizzazione. L'imposta di bollo da €16,00 è dovuta separatamente per ogni istanza presentata, salvo nei casi di esenzione previsti per legge.</p>
+            </div>
+
+            <h2>Patente di Guida — Rilascio e Rinnovo</h2>
+            <table class="tariff-table">
+                <thead>
+                    <tr><th>Codice</th><th>Pratica</th><th class="right">Importo</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="code">N001</td>
+                        <td>Rilascio patente di guida (primo rilascio)</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N002</td>
+                        <td>Rinnovo patente di guida</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N003</td>
+                        <td>Attestato di validità della patente di guida</td>
+                        <td class="right">€ 10,20</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N004</td>
+                        <td>Duplicato patente per smarrimento, furto o deterioramento</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N005</td>
+                        <td>Conversione patente estera in patente italiana</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N006</td>
+                        <td>Foglio rosa (autorizzazione all'esercitazione alla guida)</td>
+                        <td class="right">€ 20,24</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N007</td>
+                        <td>Permesso internazionale di guida</td>
+                        <td class="right">€ 10,20</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N008</td>
+                        <td>Esame di revisione patente di guida</td>
+                        <td class="right">€ 10,20</td>
+                    </tr>
+                    <tr>
+                        <td class="code">N009</td>
+                        <td>Aggiornamento dati anagrafici sulla patente</td>
+                        <td class="right">€ 9,00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Carta di Qualificazione del Conducente (CQC)</h2>
+            <table class="tariff-table">
+                <thead>
+                    <tr><th>Codice</th><th>Pratica</th><th class="right">Importo</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="code">C001</td>
+                        <td>Rilascio CQC Merci (trasporto merci)</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">C002</td>
+                        <td>Rilascio CQC Persone (trasporto persone)</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">C003</td>
+                        <td>Rinnovo CQC</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">C004</td>
+                        <td>Duplicato CQC</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Veicoli — Revisione e Immatricolazione</h2>
+            <table class="tariff-table">
+                <thead>
+                    <tr><th>Codice</th><th>Pratica</th><th class="right">Importo</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="code">V001</td>
+                        <td>Revisione periodica autoveicolo (diritti MIT)</td>
+                        <td class="right">€ 9,95</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V002</td>
+                        <td>Revisione periodica motoveicolo</td>
+                        <td class="right">€ 9,95</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V003</td>
+                        <td>Prima iscrizione al PRA e rilascio carta di circolazione</td>
+                        <td class="right">€ 32,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V004</td>
+                        <td>Duplicato carta di circolazione</td>
+                        <td class="right">€ 16,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V005</td>
+                        <td>Aggiornamento carta di circolazione (variazione dati)</td>
+                        <td class="right">€ 9,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V006</td>
+                        <td>Collaudo per omologazione veicolo</td>
+                        <td class="right">€ 150,00</td>
+                    </tr>
+                    <tr>
+                        <td class="code">V007</td>
+                        <td>Visura sul veicolo (estratto dal Pubblico Registro Automobilistico)</td>
+                        <td class="right">€ 9,00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Pagamento tramite PagoPA</h2>
+            <p>Dal <strong>27 settembre 2021</strong> tutti i pagamenti verso la Motorizzazione Civile devono essere effettuati esclusivamente tramite il sistema <strong>PagoPA</strong>. Non è più possibile effettuare pagamenti tramite bollettino postale.</p>
+            <p>Per procedere al pagamento è necessario:</p>
+            <ol class="pagopa-steps">
+                <li>Accedere alla sezione <strong>Pagamenti PagoPA</strong> del portale</li>
+                <li>Selezionare il tipo di pratica e inserire i dati richiesti</li>
+                <li>Ottenere il codice IUV (Identificativo Univoco di Versamento)</li>
+                <li>Effettuare il pagamento tramite banca, ufficio postale o app abilitate</li>
+                <li>Conservare la ricevuta da allegare alla domanda</li>
+            </ol>
+
+            <div class="info-box">
+                <p>Per informazioni sui pagamenti: <strong>assistenza@mot-centroservizi-pagopa.it</strong> — specificare sempre se la richiesta riguarda Revisioni, Documento Unico di Circolazione, Patenti o altre pratiche.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div><!-- /#pagina -->
+
+<script>
+function doLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    location.href = '/web/portale-automobilista';
+}
+(function(){
+    const t = localStorage.getItem('token');
+    const u = localStorage.getItem('user');
+    if (!t || !u) return;
+    try {
+        const pl = JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+        if (pl.exp && Date.now()/1000 > pl.exp) { localStorage.removeItem('token'); return; }
+    } catch(e) { return; }
+    let usr; try { usr = JSON.parse(u); } catch(e) { return; }
+    const fn = (usr.name||'').split(' ')[0]||'Utente';
+    document.getElementById('nome-utente').textContent = fn;
+})();
+</script>
+</body>
+</html>

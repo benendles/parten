@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il portale dell'Automobilista - Area Personale</title>
+
+    <!-- Titillium Web — same font as the real portal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Toriga (numbers) & DIN Next Pro Bold (body) -->
+    <style>
+    @font-face {
+      font-family: 'Toriga';
+      src: url('/frontend/fonts/toriga-medium.woff2') format('woff2');
+      font-weight: 700 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'DIN Next Pro';
+      src: url('/frontend/fonts/din-next-pro-bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    </style>
+
+    <!-- Same CSS stack as the real home page -->
+    <link rel="stylesheet" type="text/css"
+          href="/html/css/main.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1341556890000"/>
+    <link rel="stylesheet" type="text/css"
+          href="/servizialcittadino/theme/portaleAutomobilista.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1776712629000"/>
+    <link rel="stylesheet" type="text/css"
+          href="/pda-theme/css/main.css?browserId=other&themeId=pda_WAR_pdatheme&minifierType=css&languageId=it_IT&b=6120&t=1668629448000"/>
+
+    <style>
+    /* ── Global font ─────────────────────────────────────────────────────── */
+    body, button, input, select, textarea { font-family:'Titillium Web',Arial,sans-serif; }
+
+    /* ── Top-bar overrides ───────────────────────────────────────────────────
+       Real portal CSS (from /pda-theme/css/main.css):
+         #bar-serv   { min-height:28px; height:28px; background-color:#444646 }
+         #login      { float:right; min-width:514px; height:36px; background-color:#444646 }
+         #login-user { float:left; margin:8px 10px 0 10px; min-width:330px;
+                       font-size:90%; font-weight:bold; color:#fff }
+         #login-user strong { color:#009bc9 }
+         #menu-serv  { float:left }
+         #menu-serv li { float:left; margin:0 8px; font-size:80% }
+         #menu-serv a { color:#fff; line-height:28px; text-decoration:none!important }
+       We only override the min-width values (too wide for our authenticated bar).
+       Everything else is inherited from the real CSS files above. */
+    /* Real portal CSS:
+         #login      { float:right; min-width:514px; height:36px; background-color:#444646 }
+         #login-user { float:left; margin:8px 10px 0 10px; min-width:330px; font-size:90%; font-weight:bold; color:#fff }
+         #login-user strong { color:#009bc9 }
+       We keep the same min-width so the authenticated area matches the real portal proportions. */
+    #login      { height:auto !important; }
+    #login-user { min-width:0 !important; }
+    /* Authenticated button strip — floats right inside #login, same as real portal */
+    #btn-autenticato { float:right; display:flex; align-items:center;
+                       gap:5px; margin:4px 10px 0 0; }
+    .btn-top {
+        padding:4px 13px; font-size:11px; font-weight:700; letter-spacing:.5px;
+        border-radius:3px; cursor:pointer; color:#fff; text-transform:uppercase;
+        white-space:nowrap; line-height:1.7; font-family:inherit;
+        border:1px solid rgba(0,0,0,.30);
+        background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.28);
+        transition:filter .15s;
+    }
+    .btn-top:hover { filter:brightness(1.13); }
+    .btn-home {
+        background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%);
+        border-color:#0c52a0;
+    }
+    .btn-home:hover { filter:brightness(1.12); }
+    .btn-esci {
+        background:linear-gradient(to bottom,#999 0%,#6e6e6e 100%);
+        border-color:#555;
+    }
+    .btn-esci:hover { background:linear-gradient(to bottom,#c0392b 0%,#962d22 100%); border-color:#7a1f16; filter:none; }
+    .clr { clear:both; }
+
+    /* ── Hero banner ─────────────────────────────────────────────────────── */
+    #visore-est { overflow:hidden; }
+    #visore {
+        height:160px;
+        background:linear-gradient(155deg,#1060b0 0%,#3a96d8 45%,#55b0dc 70%,#1a5f9f 100%);
+        position:relative;
+    }
+    #visore::before {
+        content:''; position:absolute; inset:0;
+        background:repeating-linear-gradient(-25deg,
+            rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,
+            transparent 1px,transparent 80px);
+    }
+    #appsimplemenu { background:#4fb1d5; padding:5px 0; display:none; }
+
+    /* ── Two-column page layout ──────────────────────────────────────────── */
+    #pagina { padding:22px 0 36px; background:#f2f3f3; }
+    #pagina > .contenitore { display:flex; gap:18px; align-items:flex-start; }
+    #col-sx { width:188px; flex-shrink:0; }
+    #col-dx { flex:1; min-width:0; }
+
+    /* ── Left sidebar ────────────────────────────────────────────────────── */
+    .box-cittadino {
+        background:#fff; border:1px solid #ddd; border-top:3px solid #0066cc;
+        margin-bottom:14px;
+    }
+    .box-cittadino h3 {
+        background:#0066cc; color:#fff; font-size:11px; font-weight:700;
+        padding:9px 14px; margin:0; text-transform:uppercase; letter-spacing:.3px;
+    }
+    .box-cittadino ul { list-style:none; margin:0; padding:0; }
+    .box-cittadino ul li a {
+        display:block; padding:8px 14px; font-size:11px; color:#333;
+        text-decoration:none; border-bottom:1px solid #f0f0f0;
+        transition:background .15s,color .15s,padding-left .15s;
+    }
+    .box-cittadino ul li a:hover { background:#f0f5ff; padding-left:18px; color:#0066cc; }
+    .box-cittadino ul li.arrow a { color:#0066cc; font-weight:700; }
+    .box-cittadino ul li.arrow a::before { content:'▸ '; }
+
+    /* iPatente promo */
+    #ipatente { background:#fff; border:1px solid #ddd; overflow:hidden; }
+    #ipatente-immagine { text-align:center; overflow:hidden; }
+    .ipatente-img { width:100%; display:block; }
+    .ipatente-badge {
+        position:absolute; top:8px; right:8px; background:#ff9900; color:#fff;
+        font-size:8px; font-weight:700; padding:2px 6px; border-radius:9px;
+        transform:rotate(12deg);
+    }
+    #ipatente-scarica { padding:10px 12px; }
+    #ipatente-scarica h2 { font-size:12px; color:#0066cc; margin-bottom:4px; font-weight:700; }
+    #ipatente-scarica p  { font-size:10px; color:#666; margin-bottom:8px; line-height:1.4; }
+    .store-badges { display:flex; flex-direction:column; gap:5px; margin-top:6px; }
+    .store-badges a { display:block; }
+    .store-badges img { width:100%; max-width:130px; height:auto; display:block; }
+    .store-btn {
+        display:block; background:#003d7a; color:#fff; text-decoration:none;
+        font-size:9px; padding:5px 8px; border-radius:2px; margin-bottom:4px;
+        text-align:center; transition:background .15s;
+    }
+    .store-btn:hover { background:#0066cc; }
+
+    /* ── Dashboard heading ───────────────────────────────────────────────── */
+    #dashboard-heading {
+        display:flex; align-items:center; gap:12px; margin-bottom:16px;
+        padding-bottom:10px; border-bottom:2px solid #0066cc;
+    }
+    #dashboard-heading h2 {
+        font-size:15px; color:#0066cc; font-weight:700; white-space:nowrap;
+        text-transform:uppercase; letter-spacing:.2px;
+    }
+    .dash-search {
+        flex:1; display:flex; border:1px solid #ccc; border-radius:2px;
+        overflow:hidden; background:#fff;
+    }
+    .dash-search input {
+        flex:1; border:none; background:transparent;
+        padding:6px 10px; font-size:11px; outline:none; font-family:inherit;
+    }
+    .dash-search button {
+        background:#0066cc; color:#fff; border:none;
+        padding:6px 10px; cursor:pointer; font-size:12px;
+    }
+    .btn-chiudi-menu {
+        background:#555; color:#fff; border:none; padding:6px 12px;
+        font-size:10px; font-weight:700; border-radius:2px; cursor:pointer;
+        white-space:nowrap; text-transform:uppercase; letter-spacing:.3px;
+        transition:background .15s;
+    }
+    .btn-chiudi-menu:hover { background:#333; }
+
+    /* ── Cards — top row: 3 info cards ──────────────────────────────────── */
+    .cards-row {
+        display:grid; grid-template-columns:repeat(3,1fr);
+        gap:14px; margin-bottom:14px;
+    }
+    /* bottom row: settings + call center */
+    .cards-row-2 {
+        display:grid; grid-template-columns:1fr 260px;
+        gap:14px; margin-bottom:14px;
+    }
+    .dash-card {
+        border-radius:3px; overflow:hidden;
+        box-shadow:0 1px 4px rgba(0,0,0,.10);
+        transition:transform .2s,box-shadow .2s; background:#fff;
+    }
+    .dash-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.15); }
+    .card-hd {
+        padding:16px 18px 18px; color:#fff;
+    }
+    .card-hd-title {
+        font-size:13px; font-weight:700; letter-spacing:.3px;
+        text-transform:uppercase; opacity:.9; margin-bottom:10px;
+    }
+    .card-hd-num {
+        font-family:'Toriga','Titillium Web',Arial,sans-serif; font-size:72px; font-weight:900;
+        line-height:1; color:#fff; display:inline-block; margin-right:6px;
+        white-space:nowrap;
+    }
+    .card-hd-unit {
+        font-size:16px; color:rgba(255,255,255,.82); vertical-align:bottom;
+        margin-bottom:8px; display:inline-block;
+    }
+    .card-bd { padding:14px 18px 16px; }
+
+    .c-blue   .card-hd { background:#0066cc; }
+    .c-teal   .card-hd { background:#00929f; }
+    .c-orange .card-hd { background:#d97f00; }
+    .c-dark   .card-hd { background:#555; padding:10px 15px; }
+    .c-dark   .card-hd-title { font-size:11px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; opacity:1; margin-bottom:0; }
+    .card-hd-num-date { font-size:54px; }
+
+    .card-sub   { font-size:10px; color:#aaa; margin:6px 0 3px; }
+    .card-type  { font-size:11px; color:#333; font-weight:700; margin:6px 0 2px; }
+    .card-info  {
+        font-size:10px; color:#888; margin-bottom:10px; line-height:1.4;
+        overflow:hidden; display:-webkit-box;
+        -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    }
+    .card-btn {
+        display:inline-block; background:transparent;
+        border:1px solid #ccc; color:#666;
+        font-size:10px; font-weight:700; cursor:pointer;
+        padding:4px 12px; font-family:inherit;
+        transition:border-color .15s, color .15s; text-align:center;
+    }
+    .card-btn:hover { border-color:#999; color:#333; }
+
+    /* Settings items (in Impostazioni card) */
+    .settings-item {
+        display:flex; align-items:center; gap:10px; padding:10px 14px;
+        border-bottom:1px solid #eee; cursor:pointer; transition:background .15s;
+        background:#fff;
+    }
+    .settings-item:last-child { border-bottom:none; }
+    .settings-item:hover { background:#f0f5ff; }
+    .settings-item a { color:#333; text-decoration:none; font-size:12px; font-weight:600; flex:1; }
+    .settings-item:hover a { color:#0066cc; }
+    .settings-ico { flex-shrink:0; display:flex; align-items:center; }
+    .c-dark .card-bd { padding:0; }
+
+    /* Call Center card */
+    #call-center {
+        background:linear-gradient(140deg,#004a99 0%,#0066cc 100%);
+        color:#fff; border-radius:3px; padding:22px 20px;
+        text-align:center; height:100%; box-sizing:border-box;
+    }
+    #call-center h3 {
+        font-size:11px; font-weight:700; text-transform:uppercase;
+        letter-spacing:.4px; margin-bottom:6px; opacity:.8;
+    }
+    #call-center > p { font-size:11px; opacity:.85; margin-bottom:4px; }
+    #call-center-num {
+        font-size:26px; font-weight:900; color:#ff9900;
+        letter-spacing:2px; font-family:'Toriga',Arial,sans-serif;
+        margin:10px 0 8px;
+    }
+    .cc-hours { font-size:10px; line-height:1.8; opacity:.7; }
+
+    /* ── Modals ──────────────────────────────────────────────────────────── */
+    .modal-ov {
+        display:none; position:fixed; inset:0;
+        background:rgba(0,0,0,.5); z-index:9999;
+        align-items:center; justify-content:center;
+    }
+    .modal-ov.open { display:flex; }
+    .modal-box {
+        background:#fff; border-radius:4px; width:92%; max-width:520px;
+        box-shadow:0 8px 32px rgba(0,0,0,.25); overflow:hidden;
+    }
+    .modal-hd {
+        background:#0066cc; color:#fff; padding:12px 18px;
+        display:flex; align-items:center; justify-content:space-between;
+    }
+    .modal-hd h3 { font-size:14px; font-weight:700; }
+    .modal-close { background:transparent; border:none; color:#fff; font-size:18px; cursor:pointer; line-height:1; }
+    .modal-close:hover { color:#ff9900; }
+    .modal-bd { padding:18px; max-height:70vh; overflow-y:auto; }
+    .dtable { width:100%; border-collapse:collapse; font-size:12px; }
+    .dtable th,.dtable td { padding:8px 12px; border-bottom:1px solid #eee; text-align:left; }
+    .dtable th { background:#f5f5f5; color:#555; font-weight:600; width:40%; }
+    .dtable thead th { background:#0066cc; color:#fff; font-weight:700; width:auto; }
+    .dtable tr:last-child th,.dtable tr:last-child td { border-bottom:none; }
+
+    /* ── Footer icon classes (replaces inline background-image on h3) ──────── */
+    .fc-patenti    { background-image:url('/pda-theme/images/pda/patenti-ico.png?2'); }
+    .fc-veicoli    { background-image:url('/pda-theme/images/pda/veicoli-ico.png?2'); }
+    .fc-servizi    { background-image:url('/pda-theme/images/pda/servizi-online-ico.png?2'); }
+    .fc-cds        { background-image:url('/pda-theme/images/pda/codice-della-strada-ico.png?2'); }
+    .fc-prof       { background-image:url('/pda-theme/images/pda/professionisti-ico.png?2'); }
+    .fc-auto       { background-image:url('/pda-theme/images/pda/autotrasporto-ico.png?2'); }
+    .fc-app        { background-image:url('/pda-theme/images/pda/app-mobile-ico.png?2'); }
+    .fc-iniziative { background-image:url('/pda-theme/images/pda/iniziative-ico.png?2'); }
+
+    /* ── Utility ─────────────────────────────────────────────────────────── */
+    .txt-justify { text-align:justify; }
+
+    /* ── Nav dropdown z-index ────────────────────────────────────────────── */
+    ul.sub2 { z-index:999999 !important; }
+
+    /* ── Responsive / Mobile ─────────────────────────────────────────────── */
+    @media(max-width:960px){
+        .cards-row   { grid-template-columns:1fr 1fr; }
+        .cards-row-2 { grid-template-columns:1fr; }
+    }
+
+    @media(max-width:700px){
+        /* top bar: stack nav links + login vertically */
+        #bar-serv .contenitore { padding:0; }
+        #menu-serv { float:none; width:100%; }
+        #menu-serv ul { flex-wrap:wrap; }
+        #menu-serv ul li { float:none; margin:0; }
+        #menu-serv ul li a.fNiv { padding:7px 10px; font-size:10px; }
+        #login { float:none !important; width:100% !important; background:transparent; }
+        #login-user { float:none !important; display:block; padding:6px 10px 2px; }
+        #btn-autenticato { float:none !important; padding:4px 10px 6px; gap:6px; }
+        .btn-top { padding:5px 10px; font-size:10px; }
+
+        /* hide hero banner on mobile to save space */
+        #visore-est { display:none; }
+
+        /* single-column layout */
+        #pagina > .contenitore { flex-direction:column; gap:12px; }
+        #col-sx { width:100%; order:2; }
+        #col-dx { order:1; width:100%; }
+
+        .cards-row   { grid-template-columns:1fr 1fr; gap:10px; }
+        .cards-row-2 { grid-template-columns:1fr; gap:10px; }
+        .card-hd-num { font-size:38px; }
+
+        /* make modals full-width on phone */
+        .modal-box { width:98%; max-width:none; border-radius:0; }
+    }
+
+    @media(max-width:420px){
+        .cards-row { grid-template-columns:1fr; }
+    }
+    </style>
+</head>
+
+<body class="yui3-skin-sam controls-visible signed-in site">
+
+<!-- ── Top service bar — same structure as home page ──────────────────────── -->
+<div id="accordion">
+<div id="bar-serv">
+    <div class="contenitore">
+        <div id="menu-serv">
+            <h2 class="nascosto">Menu di servizio</h2>
+            <ul>
+                <li><a href="/web/portale-automobilista/chi-siamo"  class="fNiv" > Chi siamo</a></li>
+                <li><a href="/web/portale-automobilista/news-e-circolari"  class="fNiv" > News e circolari</a></li>
+                <li><a href="/web/portale-automobilista/assistenza"  class="fNiv" > Assistenza</a></li>
+                <li><a href="/web/portale-automobilista/contatti"  class="fNiv" > Contatti</a></li>
+                <li><a href="/web/portale-automobilista/faq"  class="fNiv" > FAQ</a></li>
+            </ul>
+        </div>
+        <!-- #menu-serv -->
+        <div id="login">
+            <div id="login-user">Benvenuto, <strong id="nome-utente">—</strong></div>
+            <div id="btn-autenticato">
+                <button type="button" class="btn-top btn-home" onclick="goHome()">&#8962; HOME</button>
+                <button type="button" class="btn-top" onclick="showProfilo()">PROFILO</button>
+                <button type="button" class="btn-top btn-esci" onclick="handleLogout()">ESCI</button>
+            </div>
+        </div>
+        <!-- #login -->
+        <div class="clr"></div>
+    </div>
+</div>
+
+<!-- ── Logo + Nav — copied verbatim from the proxied home page ──────────────── -->
+<div class="contenitore">
+    <div id="testa">
+        <a href="/web/portale-automobilista">
+            <img id="logo-portale" src="/pda-theme/images/pda/logo-portale.png?2" alt="Il portale dell'Automobilista"/>
+        </a>
+        <a href="https://www.mit.gov.it">
+            <img id="logo-ministero" src="/pda-theme/images/pda/logo-ministero.png?3"
+                 alt="Ministero delle Infrastrutture e dei Trasporti"/>
+        </a>
+    </div>
+</div>
+
+<div id="men-sez-est">
+    <div id="men-sez">
+        <h2 class="nascosto">Sezioni del sito</h2>
+        <div class="contenitore"><ul id="menu"><li><a href="/web/portale-automobilista/patenti"  class="sub" > <strong>Patenti</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/la-patente-di-guida"  class="sub" > La patente di guida</a></li><li><a href="/web/portale-automobilista/tutte-le-pratiche"  class="sub" > Tutte le pratiche</a></li><li><a href="/web/portale-automobilista/foglio-rosa-e-prove-new"  class="sub" > Foglio rosa e prove d'esame</a></li><li><a href="/web/portale-automobilista/patenti-carta-qualificazione-conducente"  class="sub" > Carta di Qualificazione del Conducente (CQC)</a></li><li><a href="/web/portale-automobilista/pagina-medici-certificatori"  class="sub" > Medici Certificatori - Novità</a></li><li><a href="/web/portale-automobilista/modulistica1"  class="sub" > Modulistica</a></li><li><a href="/web/portale-automobilista/patenti-patente-nautica"  class="sub" > Patente nautica</a></li><li><a href="/web/portale-automobilista/normativa"  class="sub" > Normativa</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/veicoli"  class="sub" > <strong>Veicoli</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/veicoli/autoveicoli"  class="sub" > Autoveicoli</a></li><li><a href="/web/portale-automobilista/veicoli/motocicli"  class="sub" > Motocicli</a></li><li><a href="/web/portale-automobilista/veicoli/revisioni"  class="sub" > Revisioni</a></li><li><a href="/web/portale-automobilista/veicoli/collaudi"  class="sub" > Collaudi</a></li><li><a href="/web/portale-automobilista/modulistica2"  class="sub" > Modulistica</a></li><li><a href="/web/portale-automobilista/modulistica-documento-unico"  class="sub" > Documento Unico</a></li><li><a href="/web/portale-automobilista/sted"  class="sub" > STED</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/servizi-online"  class="sub" > <strong>Servizi Online</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/monopattini-contrassegno-identificativo"  class="sub" > Monopattini - Contrassegno identificativo</a></li><li><a href="/web/portale-automobilista/verifica-revisioni-effettuate-ms"  class="sub" > Verifica revisioni effettuate</a></li><li><a href="/web/portale-automobilista/verifica-massa-supplementare"  class="sub" > Verifica massa supplementare</a></li><li><a href="/web/portale-automobilista/pagamenti-pagopa"  class="sub" > Pagamenti PagoPA</a></li><li><a href="/web/portale-automobilista/gestione-pratiche-online"  class="sub" > Gestione Pratiche Online</a></li><li><a href="/web/portale-automobilista/piattaforma-cude"  class="sub" > Piattaforma CUDE</a></li><li><a href="/web/portale-automobilista/saldo-punti-patente"  class="sub" > Saldo punti patente</a></li><li><a href="/web/portale-automobilista/ext/verifica-classe-ambientale-veicolo"  class="sub" > Verifica classe ambientale veicolo</a></li><li><a href="/web/portale-automobilista/ext/verifica-copertura-rc"  class="sub" > Verifica copertura RCA</a></li><li><a href="/web/portale-automobilista/ext/neopatentati"  class="sub" > Neopatentati</a></li><li><a href="/gms/?pp=servizi-online&amp;cp=gsm"  class="sub" > Ricerca Uffici della Motorizzazione Civile</a></li><li><a href="/web/portale-automobilista/servizi-online-ricerca-officine-autorizzate"  class="sub" > Ricerca officine autorizzate</a></li><li><a href="/web/portale-automobilista/servizi-online-ricerca-medici-certificatori"  class="sub" > Ricerca Medici Certificatori</a></li><li><a href="/web/portale-automobilista/statistiche-immatricolazioni-autovetture"  class="sub" > Statistiche immatricolazioni</a></li><li><a href="/web/portale-automobilista/rent"  class="sub" > REGISTRO ELETTRONICO NCC TAXI – RENT</a></li><li><a href="/web/portale-automobilista/rui-registro-unico-ispettori"  class="sub" > RUI - Registro Unico Ispettori</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/codice-della-strada"  class="sub" > <strong>Codice della Strada</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/violazione-e-punti"  class="sub" > Violazione e punti</a></li><li><a href="/web/portale-automobilista/censimento-velox"  class="sub" > Censimento Velox</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/professionisti"  class="sub" > <strong>Professionisti</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/manuale-gestione-utenze-per-agenzie"  class="sub" > Manuale gestione utenze per agenzie</a></li><li><a href="/web/portale-automobilista/professionisti-patentino-adr"  class="sub" > Materia ADR-RID-ADN</a></li><li><a href="/web/portale-automobilista/professionisti-atp"  class="sub" > Trasporto delle merci deperibili - ATP</a></li><li><a href="/web/portale-automobilista/database-delle-localita-a-supporto-dei-sistemi-rds-tmc"  class="sub" > Database delle località a supporto dei sistemi RDS TMC</a></li><li><a href="/web/portale-automobilista/elenco-dispositivi-di-ritenuta-stradale-omologati-ai-sensi-del-dm-21.06.04"  class="sub" > Elenco dispositivi di ritenuta stradale omologati ai sensi del DM 21.06.04</a></li><li><a href="/web/portale-automobilista/dispositivi-riduzioni-di-massa-particolato"  class="sub" > Dispositivi riduzioni di massa particolato</a></li><li><a href="/web/portale-automobilista/codici-immatricolativi-di-ciclomotori-omologati"  class="sub" > Codici immatricolativi di ciclomotori omologati</a></li><li><a href="/web/portale-automobilista/modalita-di-collegamento-al-ced-motorizzazione"  class="sub" > Modalità di collegamento al CED motorizzazione</a></li><li><a href="/web/portale-automobilista/modalita-operative-rinnovo-patenti"  class="sub" > Modalità operative per il rinnovo delle patenti</a></li><li><a href="/web/portale-automobilista/riqualificazione-bombole-di-tipo-cng4"  class="sub" > Riqualificazione bombole di tipo CNG4</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/autotrasporti"  class="sub" > <strong>Autotrasporto</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/tdo/?pp=autotrasporti&amp;cp=tdo"  class="sub" > Ricerca Aree di Fermata e Nulla Osta</a></li><li><a href="/web/portale-automobilista/ricerca-imprese-albo-nazionale-trasporto-persone"  class="sub" > Ricerca Imprese Iscritte REN - Autorizzate all'Esercizio della Professione Trasporto Persone</a></li><li><a href="/web/portale-automobilista/ricerca-imprese-trasporto-merci"  class="sub" > Ricerca Imprese iscritte REN - Autorizzate all'Esercizio della Professione Trasporto Merci</a></li><li><a href="/gisdilpofe"  class="sub" > Ricerca Servizi di Linea Interregionali</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li><li><a href="/web/portale-automobilista/applicazioni"  class="sub" > <strong>App Mobile</strong><!--[if gte IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]> <table> <tr> <td><![endif]--><ul class="sub2"><li><a href="/web/portale-automobilista/ipatente"  class="sub" > iPatente</a></li><li><a href="http://www.cciss.it/portale/cciss.portal?_nfpb=true&_windowLabel=quicklinks_1&quicklinks_1_actionOverride=%2Fportlets%2Fquicklinks%2FgoAppMobile"  class="sub" > iCCISS</a></li></ul><!--[if lte IE 6]> </td> </tr> </table> </a><![endif]--></li></ul></div>
+    </div>
+</div>
+</div><!-- /#accordion -->
+
+<!-- ── Blue hero banner ────────────────────────────────────────────────────── -->
+<div id="visore-est" class="accordion">
+    <div id="visore"></div>
+</div>
+
+<div id="appsimplemenu">
+    <div class="contenitore">
+        <a href="#" id="chiudiMenu">
+            <img src="/pda-theme/images/pda/chiudi-il-menu.png"
+                 alt="Chiudi il menù"/>
+        </a>
+    </div>
+</div>
+
+<!-- ── Page body ───────────────────────────────────────────────────────────── -->
+<div id="pagina">
+<div class="contenitore">
+
+    <!-- Left sidebar -->
+    <div id="col-sx">
+        <div class="box-cittadino">
+            <h3>Cittadino</h3>
+            <ul>
+                <li class="arrow"><a href="#" onclick="showProfilo();return false;">Profilo</a></li>
+                <li class="arrow"><a href="/frontend/dashboard.html">Accesso ai servizi</a></li>
+                <li><a href="/frontend/guida-servizi.html">Guida ai servizi</a></li>
+                <li><a href="/frontend/modulistica.html">Modulistica</a></li>
+                <li><a href="/frontend/tariffario.html">Tariffario</a></li>
+            </ul>
+        </div>
+
+        <!-- iPatente promo -->
+        <div id="ipatente">
+            <div id="ipatente-immagine">
+                <img src="/documents/56611/54481958/immagine+iPatente+PDA_xsm.jpg/474c8136-06bf-4005-821a-b7205c1394da?t=1599125163015" alt="iPatente app" class="ipatente-img"/>
+            </div>
+            <div id="ipatente-scarica">
+                <h2>iPatente</h2>
+                <p>C'è un'applicazione che spiana la strada. <strong>Scaricala</strong></p>
+                <div class="store-badges">
+                    <a href="https://play.google.com/store/apps/details?id=it.iwikiphone.portaleautomobilista2&hl=it" target="_blank">
+                        <img src="/documents/56611/57317/google_store_tn.png" alt="Scarica su Google Play"/>
+                    </a>
+                    <a href="https://apps.apple.com/it/app/ipatente/id417705371" target="_blank">
+                        <img src="/documents/56611/57317/apple_store_tn.png" alt="Scarica su App Store"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right dashboard content -->
+    <div id="col-dx">
+
+        <div id="dashboard-heading">
+            <h2>Cittadino</h2>
+            <div class="dash-search">
+                <input type="text" placeholder="Cerca...">
+                <button type="button">🔍</button>
+            </div>
+            <button type="button" class="btn-chiudi-menu">⊙ CHIUDI MENU</button>
+        </div>
+
+        <!-- Row 1: 3 main info cards -->
+        <div class="cards-row">
+
+            <!-- Saldo Punti -->
+            <div class="dash-card c-blue">
+                <div class="card-hd">
+                    <div class="card-hd-title">Saldo Punti</div>
+                    <div>
+                        <span class="card-hd-num" id="license-points">—</span>
+                        <span class="card-hd-unit">Punti</span>
+                    </div>
+                </div>
+                <div class="card-bd">
+                    <p class="card-sub">Scadenza il <span id="points-expiry"></span></p>
+                    <button type="button" class="card-btn" onclick="showExtract()">Estratto conto →</button>
+                </div>
+            </div>
+
+            <!-- Scadenza Patente -->
+            <div class="dash-card c-teal">
+                <div class="card-hd">
+                    <div class="card-hd-title">Scadenza Patente</div>
+                    <div class="card-hd-num card-hd-num-date" id="license-expiry">—</div>
+                </div>
+                <div class="card-bd">
+                    <p class="card-sub">Numero patente</p>
+                    <p class="card-info" id="license-number-text"></p>
+                    <button type="button" class="card-btn" onclick="showLicense()">Visualizza tutto →</button>
+                </div>
+            </div>
+
+            <!-- Veicoli in possesso -->
+            <div class="dash-card c-orange">
+                <div class="card-hd">
+                    <div class="card-hd-title">Veicoli in possesso</div>
+                    <div>
+                        <span class="card-hd-num" id="vehicle-count">—</span>
+                        <span class="card-hd-unit" id="vehicle-count-label">Veicolo</span>
+                    </div>
+                </div>
+                <div class="card-bd">
+                    <p class="card-type" id="vehicle-type">—</p>
+                    <p class="card-info" id="vehicle-class">—</p>
+                    <button type="button" class="card-btn" onclick="showVehicle()">Vai alla scheda →</button>
+                </div>
+            </div>
+
+        </div><!-- /.cards-row -->
+
+        <!-- Row 2: Impostazioni + Call Center -->
+        <div class="cards-row-2">
+
+            <!-- Impostazioni -->
+            <div class="dash-card c-dark">
+                <div class="card-hd"><div class="card-hd-title">Impostazioni</div></div>
+                <div class="card-bd">
+                    <div class="settings-item">
+                        <span class="settings-ico">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="8" width="11" height="8" rx="1.5"/>
+                                <path d="M5.5 8V6A3 3 0 0 1 11.5 6V8"/>
+                                <circle cx="8.5" cy="12" r="1" fill="#0066cc" stroke="none"/>
+                            </svg>
+                        </span>
+                        <a href="#">Modifica password</a>
+                    </div>
+                    <div class="settings-item">
+                        <span class="settings-ico">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="8.5" cy="5.5" r="3"/>
+                                <path d="M2 15c0-3.6 2.9-6.5 6.5-6.5S15 11.4 15 15"/>
+                            </svg>
+                        </span>
+                        <a href="#">Modifica dati</a>
+                    </div>
+                    <div class="settings-item">
+                        <span class="settings-ico">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8.5 2A4.5 4.5 0 0 0 4 6.5V10L2.5 12.5h12L13 10V6.5A4.5 4.5 0 0 0 8.5 2z"/>
+                                <path d="M7 12.5a1.5 1.5 0 0 0 3 0"/>
+                            </svg>
+                        </span>
+                        <a href="#">Notifiche ricevute</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call Center -->
+            <div id="call-center">
+                <h3>Call Center</h3>
+                <p>Il tuo codice identificativo per il Call Center è</p>
+                <div id="call-center-num">—</div>
+                <p class="cc-hours">
+                    Il servizio è attivo dal Lunedì al Venerdì<br>
+                    dalle 8:00 alle 20:00 e il Sabato<br>
+                    dalle 8:00 alle 14:00
+                </p>
+            </div>
+
+        </div><!-- /.cards-row-2 -->
+
+    </div><!-- /#col-dx -->
+</div><!-- /.contenitore -->
+</div><!-- /#pagina -->
+
+<div id="pre-footer-ext">
+    <h2 class="nascosto">Mappa del sito</h2>
+
+    <div id="pre-footer">
+        <div id="pre-footer-int">
+            <div id="pre-footer-left">
+                
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_85_  portlet-static portlet-static-end portlet-borderless portlet-site-map " id="p_p_id_85_INSTANCE_9i8u_" >
+		<span id="p_85_INSTANCE_9i8u"></span>
+
+		<div class="portlet-body">
+
+
+
+	
+	
+	
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
+		
+
+		
+			
+			
+
+				
+
+				<div class="portlet-borderless-container">
+					
+
+					
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="/web/portale-automobilista/prefooter/chi-siamo" > Chi siamo</a></li><li class="sep"><a href="/web/portale-automobilista/eventi1" > Eventi</a></li><li class="sep"><a href="/web/portale-automobilista/news-e-circolari1" > News e circolari</a></li><li class="sep"><a href="/web/portale-automobilista/prefooter/assistenza" > Assistenza</a></li><li class="sep"><a href="/web/portale-automobilista/prefooter/faq" > Faq</a></li></ul>
+
+
+
+	
+
+					
+				
+			
+			
+		
+	
+	
+
+
+
+	</div>
+
+				</div>
+
+				
+			
+		
+	
+
+
+	
+
+
+
+
+
+			
+		</div>
+	</div>
+
+
+
+
+
+                
+            </div>
+            <!-- #pre-footer-left -->
+            <div id="pre-footer-right">
+                <img id="pre-footer-right-seguici-su" src="/pda-theme/images/pda/seguici-su.png"
+                     alt="Seguici su facebook"/>
+            
+        
+
+                <a href="https://www.youtube.com/user/Portaleautomobilista" onclick="target='_blank'">
+                    <img src="/pda-theme/images/pda/social-youtube.png" alt="Iscriviti al mio canale YouTube"/>
+                </a>
+                         </div>
+            <!-- #pre-footer-right -->
+            <div class="clr"></div>
+        </div>
+        <!-- #pre-footer-int -->
+    </div>
+    <!-- #pre-footer -->
+</div>
+<!-- #pre-footer-ext -->
+<div id="footer">
+    <div class="contenitore">
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_85_  portlet-static portlet-static-end portlet-borderless portlet-site-map " id="p_p_id_85_INSTANCE_e5r6t_" >
+		<span id="p_85_INSTANCE_e5r6t"></span>
+
+		<div class="portlet-body">
+
+
+
+	
+	
+	
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
+		
+
+		
+			
+			
+
+				
+
+				<div class="portlet-borderless-container">
+					
+
+					
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div  class="footer-col "><h3 class="fc-patenti"><a href="/web/portale-automobilista/patenti" > Patenti</a></h3><ul><li><a href="/web/portale-automobilista/la-patente-di-guida" > La patente di guida</a></li><li><a href="/web/portale-automobilista/tutte-le-pratiche" > Tutte le pratiche</a></li><li><a href="/web/portale-automobilista/foglio-rosa-e-prove-new" > Foglio rosa e prove d’esame</a></li><li><a href="/web/portale-automobilista/patenti-carta-qualificazione-conducente" > Carta di Qualificazione del Conducente (CQC)</a></li><li><a href="/web/portale-automobilista/pagina-medici-certificatori" > Medici Certificatori - Novità</a></li><li><a href="/web/portale-automobilista/modulistica1" > Modulistica</a></li><li><a href="/web/portale-automobilista/patenti-patente-nautica" > Patente nautica</a></li><li><a href="/web/portale-automobilista/normativa" > Normativa</a></li></ul></div><div  class="footer-col footer-margin "><h3 class="fc-veicoli"><a href="/web/portale-automobilista/veicoli" > Veicoli</a></h3><ul><li><a href="/web/portale-automobilista/veicoli/autoveicoli" > Autoveicoli</a></li><li><a href="/web/portale-automobilista/veicoli/motocicli" > Motocicli</a></li><li><a href="/web/portale-automobilista/veicoli/revisioni" > Revisioni</a></li><li><a href="/web/portale-automobilista/veicoli/collaudi" > Collaudi</a></li><li><a href="/web/portale-automobilista/modulistica2" > Modulistica</a></li><li><a href="/web/portale-automobilista/modulistica-documento-unico" > Documento Unico</a></li><li><a href="/web/portale-automobilista/sted" > STED</a></li></ul></div><div  class="footer-col footer-margin "><h3 class="fc-servizi"><a href="/web/portale-automobilista/servizi-online" > Servizi Online</a></h3><ul><li><a href="/web/portale-automobilista/monopattini-contrassegno-identificativo" > Monopattini - Contrassegno identificativo</a></li><li><a href="/web/portale-automobilista/verifica-revisioni-effettuate-ms" > Verifica revisioni effettuate</a></li><li><a href="/web/portale-automobilista/verifica-massa-supplementare" > Verifica massa supplementare</a></li><li><a href="/web/portale-automobilista/pagamenti-pagopa" > Pagamenti PagoPA</a></li><li><a href="/web/portale-automobilista/gestione-pratiche-online" > Gestione Pratiche Online</a></li><li><a href="/web/portale-automobilista/piattaforma-cude" > Piattaforma CUDE</a></li><li><a href="/web/portale-automobilista/saldo-punti-patente" > Saldo punti patente</a></li><li><a href="/web/portale-automobilista/ext/verifica-classe-ambientale-veicolo" > Verifica classe ambientale veicolo</a></li><li><a href="/web/portale-automobilista/ext/verifica-copertura-rc" > Verifica copertura RCA</a></li><li><a href="/web/portale-automobilista/ext/neopatentati" > Neopatentati</a></li><li><a href="/gms/?pp=servizi-online&amp;cp=gsm" > Ricerca Uffici della Motorizzazione Civile</a></li><li><a href="/web/portale-automobilista/servizi-online-ricerca-officine-autorizzate" > Ricerca officine autorizzate</a></li><li><a href="/web/portale-automobilista/servizi-online-ricerca-medici-certificatori" > Ricerca Medici Certificatori</a></li><li><a href="/web/portale-automobilista/statistiche-immatricolazioni-autovetture" > Statistiche immatricolazioni</a></li><li><a href="/web/portale-automobilista/rent" > REGISTRO ELETTRONICO NCC TAXI – RENT</a></li><li><a href="/web/portale-automobilista/rui-registro-unico-ispettori" > RUI - Registro Unico Ispettori</a></li></ul></div><div  class="footer-col footer-margin footer_exp"><h3 class="fc-cds"><a href="/web/portale-automobilista/codice-della-strada" > Codice della Strada</a></h3><ul><li><a href="/web/portale-automobilista/violazione-e-punti" > Violazione e punti</a></li><li><a href="/web/portale-automobilista/censimento-velox" > Censimento Velox</a></li></ul></div><div class="clr"></div><div  class="footer-col "><h3 class="fc-prof"><a href="/web/portale-automobilista/professionisti" > Professionisti</a></h3><ul><li><a href="/web/portale-automobilista/manuale-gestione-utenze-per-agenzie" > Manuale gestione utenze per agenzie</a></li><li><a href="/web/portale-automobilista/professionisti-patentino-adr" > Materia ADR-RID-ADN</a></li><li><a href="/web/portale-automobilista/professionisti-atp" > Trasporto delle merci deperibili - ATP</a></li><li><a href="/web/portale-automobilista/database-delle-localita-a-supporto-dei-sistemi-rds-tmc" > Database delle località a supporto dei sistemi RDS TMC</a></li><li><a href="/web/portale-automobilista/elenco-dispositivi-di-ritenuta-stradale-omologati-ai-sensi-del-dm-21.06.04" > Elenco dispositivi di ritenuta stradale omologati ai sensi del DM 21.06.04</a></li><li><a href="/web/portale-automobilista/dispositivi-riduzioni-di-massa-particolato" > Dispositivi riduzioni di massa particolato</a></li><li><a href="/web/portale-automobilista/codici-immatricolativi-di-ciclomotori-omologati" > Codici immatricolativi di ciclomotori omologati</a></li><li><a href="/web/portale-automobilista/modalita-di-collegamento-al-ced-motorizzazione" > Modalità di collegamento al CED motorizzazione</a></li><li><a href="/web/portale-automobilista/modalita-operative-rinnovo-patenti" > Modalità operative per il rinnovo delle patenti</a></li><li><a href="/web/portale-automobilista/riqualificazione-bombole-di-tipo-cng4" > Riqualificazione bombole di tipo CNG4</a></li></ul></div><div  class="footer-col footer-margin "><h3 class="fc-auto"><a href="/web/portale-automobilista/autotrasporti" > Autotrasporto</a></h3><ul><li><a href="/tdo/?pp=autotrasporti&amp;cp=tdo" > Ricerca Aree di Fermata e Nulla Osta</a></li><li><a href="/web/portale-automobilista/ricerca-imprese-albo-nazionale-trasporto-persone" > Ricerca Imprese Iscritte REN - Autorizzate all'Esercizio della Professione Trasporto Persone</a></li><li><a href="/web/portale-automobilista/ricerca-imprese-trasporto-merci" > Ricerca Imprese iscritte REN - Autorizzate all'Esercizio della Professione Trasporto Merci</a></li><li><a href="/gisdilpofe" > Ricerca Servizi di Linea Interregionali</a></li></ul></div><div  class="footer-col footer-margin "><h3 class="fc-app"><a href="/web/portale-automobilista/applicazioni" > App Mobile</a></h3><ul><li><a href="/web/portale-automobilista/ipatente" > iPatente</a></li><li><a href="http://www.cciss.it/portale/cciss.portal?_nfpb=true&_windowLabel=quicklinks_1&quicklinks_1_actionOverride=%2Fportlets%2Fquicklinks%2FgoAppMobile" > iCCISS</a></li></ul></div><div  class="footer-col footer-margin "><h3 class="fc-iniziative"><a href="/web/portale-automobilista/iniziative" > Iniziative</a></h3><ul><li><a href="/web/portale-automobilista/educare-alla-sicurezza-stradale" > Educare alla Sicurezza Stradale</a></li></ul></div>
+
+
+
+	
+
+					
+				
+			
+			
+		
+	
+	
+
+
+
+	</div>
+
+				</div>
+
+				
+			
+		
+	
+
+
+	
+
+
+
+
+
+			
+		</div>
+	</div>
+
+
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_56_  portlet-static portlet-static-end portlet-borderless portlet-journal-content " id="p_p_id_56_INSTANCE_E9j9_" >
+		<span id="p_56_INSTANCE_E9j9"></span>
+
+		<div class="portlet-body">
+
+
+
+	
+	
+	
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
+		
+
+		
+			
+			
+
+				
+
+				<div class="portlet-borderless-container">
+					
+
+					
+
+
+	<div class="portlet-body">
+
+
+
+	
+		
+			
+			
+				
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+				
+
+				
+					
+					
+						
+
+
+	
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+
+		
+
+		
+			
+
+				
+
+				
+
+				<div class="journal-content-article" id="article_10155_56611_PDA_FOOTER_ASSISTENZA_4.3">
+					
+
+<style>
+#numero-verde, .numero-verde {
+    background-color: #272727;
+}
+
+#numero-verde > p, .numero-verde > p {
+    margin: 0;
+    background-color: #272727;
+    padding: 0 10px 10px 10px;
+    font-family: 'Gotham Rounded', Helvetica, sans-serif;
+    font-size: 80%;
+    color: #eeeeee;
+    text-decoration: none !important;
+}
+
+#numero-verde > div, .numero-verde > div {
+    margin-left: 20px;
+    padding-bottom: 20px;
+}
+</style>
+
+<div id="footer-4" class="footer-col">
+    
+    	
+				
+				
+					
+						
+			<div class="numero-verde">
+				<h3>
+					<a href="  /web/portale-automobilista/assistenza ">
+						  Assistenza Portale dell'Automobilista 					</a>
+				</h3>
+
+				<p class="txt-justify">
+	Per informazioni sui servizi offerti, scrivi alla casella mail <a href="mailto:uco.dgmot@servizidt.it">uco.dgmot@servizidt.it</a> o contatta il Call Center del Portale dell'Automobilista, attivo dal lunedì al venerdì, dalle 8:00 alle 21:00 ed il sabato, dalle 8:00 alle 14:00, raggiungibile componendo il numero 800 23 23 23, gratuito da telefono fisso e il numero 06 45 77 59 27 da cellulare, a pagamento in base alla tariffa applicata dai diversi gestori.</p>
+
+
+				<div><img src="/documents/56611/57317/numero-verde.png/f467f40d-ffdd-4c4d-bf61-1458154764b1?t=1362585980126?t=1362585980126?t=1362585980126?t=1362585980126?t=1362585980126?t=1362585980126" alt=""/></div>
+			</div>
+			
+		
+				
+			
+				
+					
+						
+			<div class="numero-verde">
+				<h3>
+					<a href=" javascript: void(0); ">
+						  Assistenza pagamenti PagoPA 					</a>
+				</h3>
+
+				<p class="txt-justify">
+	Per assistenza ai PAGAMENTI PAGOPA, scrivere alla casella di posta: <a href="mailto:assistenza@mot-centroservizi-pagopa.it?subject=assistenza%20pagamenti%20pagopa">assistenza@mot-centroservizi-pagopa.it</a> (specificando se la richiesta di assistenza riguarda Revisioni, Documento Unico di circolazione, Patenti o altre pratiche).</p>
+
+
+				<div><img src="" alt=""/></div>
+			</div>
+			
+		
+				
+	    
+</div>
+<!-- #footer-4 -->
+				</div>
+
+				
+			
+			
+		
+	
+
+
+
+
+
+
+
+	
+		<div class="entry-links">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</div>
+	
+
+	
+
+	
+
+	
+
+					
+				
+			
+			
+		
+	
+	
+
+
+
+	</div>
+
+				</div>
+
+				
+			
+		
+	
+
+
+	
+
+
+
+
+
+			
+		</div>
+	</div>
+
+
+
+
+
+    </div>
+    <!-- .contenitore -->
+    <div class="clr"></div>
+</div>
+<!-- #footer -->
+
+<!-- ── License modal ───────────────────────────────────────────────────────── -->
+<div id="licenseModal" class="modal-ov" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-hd">
+            <h3>Dettagli Patente</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-bd">
+            <table class="dtable">
+                <tr><th>Cognome e Nome</th><td id="m-name">—</td></tr>
+                <tr><th>Codice Fiscale</th><td id="m-taxid">—</td></tr>
+                <tr><th>Numero Patente</th><td id="m-license-num">—</td></tr>
+                <tr><th>Categoria</th><td id="m-category">—</td></tr>
+                <tr><th>Scadenza</th><td id="m-expiry">—</td></tr>
+                <tr><th>Saldo Punti</th><td id="m-points">—</td></tr>
+                <tr><th>Autenticazione</th><td id="m-auth">—</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ── Vehicle modal ───────────────────────────────────────────────────────── -->
+<div id="vehicleModal" class="modal-ov" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-hd">
+            <h3>Scheda Veicolo</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-bd" id="vehicle-modal-body">
+            <p>Caricamento...</p>
+        </div>
+    </div>
+</div>
+
+<!-- ── Estratto conto modal ─────────────────────────────────────────────────── -->
+<div id="extractModal" class="modal-ov" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-hd">
+            <h3>Estratto Conto Punti</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">&#x2715;</button>
+        </div>
+        <div class="modal-bd" id="extract-modal-body">
+            <p>Caricamento...</p>
+        </div>
+    </div>
+</div>
+
+<!-- ── Profilo modal ────────────────────────────────────────────────────────── -->
+<div id="profiloModal" class="modal-ov" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-hd">
+            <h3>Il tuo Profilo</h3>
+            <button type="button" class="modal-close" onclick="closeModal()">&#x2715;</button>
+        </div>
+        <div class="modal-bd">
+            <table class="dtable">
+                <tr><th>Nome e Cognome</th><td id="p-name">—</td></tr>
+                <tr><th>Codice Fiscale</th><td id="p-taxid">—</td></tr>
+                <tr><th>Email</th><td id="p-email">—</td></tr>
+                <tr><th>Metodo di accesso</th><td id="p-auth">—</td></tr>
+                <tr><th>Saldo Punti</th><td id="p-points">—</td></tr>
+                <tr><th>Scadenza Patente</th><td id="p-expiry">—</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="js/dashboard.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+/* Login Page Styling - Italian Automotive Portal */
+
+:root {
+    --primary-blue: #0066cc;
+    --primary-dark: #003d7a;
+    --accent-teal: #17a2b8;
+    --accent-orange: #ff9900;
+    --light-gray: #f5f5f5;
+    --border-gray: #ddd;
+    --text-dark: #333;
+    --text-light: #666;
+    --success-green: #28a745;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary-blue);
+    padding-bottom: 20px;
+}
+
+.logo {
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.logo-section h1 {
+    color: var(--primary-blue);
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.auth-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border: 2px solid var(--primary-blue);
+    background: white;
+    color: var(--primary-blue);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+    background: var(--primary-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+}
+
+.auth-btn .icon {
+    font-size: 20px;
+}
+
+.spid-btn {
+    border-color: #1f4788;
+    color: #1f4788;
+}
+
+.spid-btn:hover {
+    background: #1f4788;
+    color: white;
+}
+
+.cie-btn {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+}
+
+.cie-btn:hover {
+    background: var(--accent-teal);
+    color: white;
+}
+
+.auth-form {
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form h2 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-gray);
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+}
+
+.cancel-btn {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid var(--border-gray);
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+}
+
+.cancel-btn:hover {
+    background: var(--light-gray);
+    border-color: var(--text-dark);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8d7da;
+    border-left: 3px solid #dc3545;
+    border-radius: 3px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.info-section {
+    background: var(--light-gray);
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 25px;
+    border-left: 4px solid var(--accent-orange);
+}
+
+.info-section h3 {
+    color: var(--primary-blue);
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.info-section ul {
+    list-style: none;
+}
+
+.info-section li {
+    color: var(--text-dark);
+    font-size: 13px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.info-section li:before {
+    content: '✓';
+    color: var(--success-green);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.footer {
+    color: white;
+    text-align: center;
+    font-size: 12px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        padding: 25px;
+    }
+
+    .logo {
+        font-size: 36px;
+    }
+
+    .logo-section h1 {
+        font-size: 20px;
+    }
+
+    .auth-btn {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
