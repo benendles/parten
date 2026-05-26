@@ -135,13 +135,13 @@ footer .footer-row{margin-bottom:6px}
 <div id="bar-serv">
   <div class="inner">
     <div id="login">
-      <a href="/frontend/login.html"><button class="btn-accedi">Accedi al Portale</button></a>
+      <a href="login.html"><button class="btn-accedi">Accedi al Portale</button></a>
       <button class="btn-iscriviti">Iscriviti</button>
     </div>
     <div id="auth-bar">
       <span class="welcome">Benvenuto, <strong id="home-username">—</strong></span>
-      <button class="btn-top btn-home-t" onclick="location.href='/frontend/dashboard.html'">&#8962; HOME</button>
-      <button class="btn-top btn-prof-t" onclick="location.href='/frontend/dashboard.html#profilo'">PROFILO</button>
+      <button class="btn-top btn-home-t" onclick="location.href='dashboard.html'">&#8962; HOME</button>
+      <button class="btn-top btn-prof-t" onclick="location.href='dashboard.html#profilo'">PROFILO</button>
       <button class="btn-top btn-esci-t" onclick="doLogout()">ESCI</button>
     </div>
   </div>
@@ -152,7 +152,7 @@ footer .footer-row{margin-bottom:6px}
   <h1>Portale dell'Automobilista</h1>
   <p>Accedi ai servizi online del Ministero delle Infrastrutture e dei Trasporti per la gestione di patente, veicoli e pratiche automobilistiche.</p>
   <div class="cta-row">
-    <a href="/frontend/login.html"><button class="cta-btn cta-primary">Accedi con SPID o CIE</button></a>
+    <a href="login.html"><button class="cta-btn cta-primary">Accedi con SPID o CIE</button></a>
     <a href="#services"><button class="cta-btn cta-secondary">Scopri i servizi</button></a>
   </div>
 </div>
@@ -227,7 +227,7 @@ footer .footer-row{margin-bottom:6px}
 </footer>
 
 <script>
-function goLogin() { location.href = '/frontend/login.html'; }
+function goLogin() { location.href = 'login.html'; }
 
 function doLogout() {
   localStorage.removeItem('token');
