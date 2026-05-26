@@ -166,11 +166,7 @@ function requireAuth(req, res, next) {
 
 // ── Express middleware ─────────────────────────────────────────────────────────
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5500', 'http://127.0.0.1:5500',
-    'http://localhost:5501', 'http://127.0.0.1:5501',
-  ],
+  origin: (origin, cb) => cb(null, true),
   credentials: true,
 }));
 app.use(express.json());
@@ -1410,7 +1406,10 @@ const ROOT = path.join(__dirname, '..');
 // ── Cloned portal home (served with GUARD injected so auth interception works)
 const CLONE_HOME = path.join(ROOT, 'ilportaledellautomobilista/www.ilportaledellautomobilista.it/web/portale-automobilista.html');
 const BASE_TAG = '<base href="/ilportaledellautomobilista/www.ilportaledellautomobilista.it/web/">';
-function serveCloneHome(_req, res) {
+const CLONE_HOME_EXISTS = fs.existsSync(CLONE_HOME);
+function serveCloneHome(req, res, next) {
+  // On cloud deployments the cloned directory isn't present — fall through to the live proxy
+  if (!CLONE_HOME_EXISTS) return next();
   let html = fs.readFileSync(CLONE_HOME, 'utf8');
   // Rewrite absolute real-site URLs to stay on our server
   html = html.replace(new RegExp(REAL_SITE.replace(/\./g, '\\.'), 'g'), LOCAL);

@@ -1,0 +1,12 @@
+{
+  "name": "portale-automobilista",
+  "version": "1.0.0",
+  "description": "Portale dell'Automobilista — SPID/CIE authentication system",
+  "scripts": {
+    "start": "node backend/server.js",
+    "install-deps": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
