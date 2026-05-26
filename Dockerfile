@@ -1,6 +1,9 @@
 FROM node:20-bullseye-slim
-# cache-bust: 3
+# cache-bust: 4
 WORKDIR /app
+
+# Install build tools needed to compile better-sqlite3
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies first (cached layer)
 COPY backend/package*.json ./backend/
