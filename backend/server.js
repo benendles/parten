@@ -1384,7 +1384,7 @@ const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middl
 const fs = require('fs');
 
 const REAL_SITE   = 'https://www.ilportaledellautomobilista.it';
-const LOCAL       = `http://localhost:${PORT}`;
+const LOCAL       = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
 const LOGIN_PAGE  = '/login.html';
 
 // Auth patterns — any request matching these never reaches the real site.
