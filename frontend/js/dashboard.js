@@ -33,8 +33,8 @@ function populate(data) {
 
   // Veicoli card
   const count = data.vehicles.length;
-  setText('vehicle-count',       count);
-  setText('vehicle-count-label', count === 1 ? 'Veicolo' : 'Veicoli');
+  setText('vehicle-count',       count === 0 ? '—' : count);
+  setText('vehicle-count-label', count === 0 ? '' : count === 1 ? 'Veicolo' : 'Veicoli');
 
   if (count > 0) {
     const v = data.vehicles[0];
