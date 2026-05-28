@@ -37,308 +37,239 @@
 
     <style>
     /* ── Global font ─────────────────────────────────────────────────────── */
-    body, button, input, select, textarea { font-family:'Titillium Web',Arial,sans-serif; }
+    body, button, input, select, textarea { font-family: Arial, Helvetica, sans-serif; }
 
-    /* ── Top-bar overrides ───────────────────────────────────────────────────
-       Real portal CSS (from /pda-theme/css/main.css):
-         #bar-serv   { min-height:28px; height:28px; background-color:#444646 }
-         #login      { float:right; min-width:514px; height:36px; background-color:#444646 }
-         #login-user { float:left; margin:8px 10px 0 10px; min-width:330px;
-                       font-size:90%; font-weight:bold; color:#fff }
-         #login-user strong { color:#009bc9 }
-         #menu-serv  { float:left }
-         #menu-serv li { float:left; margin:0 8px; font-size:80% }
-         #menu-serv a { color:#fff; line-height:28px; text-decoration:none!important }
-       We only override the min-width values (too wide for our authenticated bar).
-       Everything else is inherited from the real CSS files above. */
-    /* Real portal CSS:
-         #login      { float:right; min-width:514px; height:36px; background-color:#444646 }
-         #login-user { float:left; margin:8px 10px 0 10px; min-width:330px; font-size:90%; font-weight:bold; color:#fff }
-         #login-user strong { color:#009bc9 }
-       We keep the same min-width so the authenticated area matches the real portal proportions. */
-    #login      { height:auto !important; }
-    #login-user { min-width:0 !important; }
-    /* Authenticated button strip — floats right inside #login, same as real portal */
-    #btn-autenticato { float:right; display:flex; align-items:center;
-                       gap:5px; margin:4px 10px 0 0; }
+    /* ── Top bar ─────────────────────────────────────────────────────────── */
+    #bar-serv { background: #444444 !important; }
+    #menu-serv li a.fNiv { font-size: 11px !important; font-weight: 400 !important; color: #cccccc !important; line-height: 28px; }
+    #login      { height: auto !important; }
+    #login-user { min-width: 0 !important; font-size: 11px !important; font-weight: 700 !important; color: #fff !important; }
+
+    /* Nav bar menu items */
+    #men-sez #menu > li > a,
+    #men-sez #menu > li > a strong { font-size: 12px; font-weight: 700; color: #333333; text-transform: uppercase; }
+
+    /* ── Header ─────────────────────────────────────────────────────────── */
+    #testa { background: #e8e4dc; }
+
+    /* ── Main nav bar ────────────────────────────────────────────────────── */
+    #men-sez-est { background: #c8c4bc; border-bottom: 1px solid #aaaaaa; }
+
+    /* ── Top buttons — flat ──────────────────────────────────────────────── */
+    #btn-autenticato { float: right; display: flex; align-items: center; gap: 5px; margin: 3px 10px 0 0; }
     .btn-top {
-        padding:4px 13px; font-size:11px; font-weight:700; letter-spacing:.5px;
-        border-radius:3px; cursor:pointer; color:#fff; text-transform:uppercase;
-        white-space:nowrap; line-height:1.7; font-family:inherit;
-        border:1px solid rgba(0,0,0,.30);
-        background:linear-gradient(to bottom,#5a90c8 0%,#3a6fa8 100%);
-        box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.28);
-        transition:filter .15s;
+        padding: 3px 10px; font-size: 11px; font-weight: 400; letter-spacing: .3px;
+        border-radius: 3px; cursor: pointer; color: #fff; text-transform: uppercase;
+        white-space: nowrap; line-height: 1.7; font-family: inherit; border: none;
+        background: #555555;
     }
-    .btn-top:hover { filter:brightness(1.13); }
-    .btn-home {
-        background:linear-gradient(to bottom,#2e8ae0 0%,#1262b8 100%);
-        border-color:#0c52a0;
-    }
-    .btn-home:hover { filter:brightness(1.12); }
-    .btn-esci {
-        background:linear-gradient(to bottom,#999 0%,#6e6e6e 100%);
-        border-color:#555;
-    }
-    .btn-esci:hover { background:linear-gradient(to bottom,#c0392b 0%,#962d22 100%); border-color:#7a1f16; filter:none; }
-    .clr { clear:both; }
+    .btn-home { background: #1a6eb5; }
+    .btn-esci { background: #888888; }
+    .btn-top:hover { filter: brightness(1.15); }
+    .clr { clear: both; }
 
     /* ── Hero banner ─────────────────────────────────────────────────────── */
-    #visore-est { overflow:hidden; }
+    #visore-est { overflow: hidden; }
     #visore {
-        height:160px;
-        background:linear-gradient(155deg,#1060b0 0%,#3a96d8 45%,#55b0dc 70%,#1a5f9f 100%);
-        position:relative;
+        height: 167px;
+        background-image: url('/ilportaledellautomobilista/www.ilportaledellautomobilista.it/documents/56611/57317/visore-home.png/visore-home.png5534.jpg');
+        background-size: cover;
+        background-position: center;
+        position: relative;
     }
-    #visore::before {
-        content:''; position:absolute; inset:0;
-        background:repeating-linear-gradient(-25deg,
-            rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,
-            transparent 1px,transparent 80px);
-    }
-    #appsimplemenu { background:#4fb1d5; padding:5px 0; display:none; }
+    #appsimplemenu { display: none; }
 
-    /* ── Two-column page layout ──────────────────────────────────────────── */
-    #pagina { padding:22px 0 36px; background:#f2f3f3; }
-    #pagina > .contenitore { display:flex; gap:18px; align-items:flex-start; }
-    #col-sx { width:188px; flex-shrink:0; }
-    #col-dx { flex:1; min-width:0; }
+    /* CHIUDI MENU — absolute bottom-right of banner */
+    .btn-chiudi-menu {
+        position: absolute; bottom: 0; right: 0;
+        background: #555555; color: #fff; border: none;
+        font-size: 11px; font-weight: 400; padding: 4px 10px;
+        border-top-left-radius: 3px; cursor: pointer; font-family: inherit;
+    }
+    .btn-chiudi-menu:hover { background: #333333; }
+
+    /* ── Three-column page layout ────────────────────────────────────────── */
+    #pagina { padding: 0; background: #d4d0c8; }
+    #pagina > .contenitore { display: flex; gap: 0; align-items: flex-start; }
+    #col-sx { width: 160px; flex-shrink: 0; background: #e0dcd4; border-right: 1px solid #bbbbbb; min-height: 400px; }
+    #col-dx { flex: 1; min-width: 0; padding: 12px; }
+    #col-rt { width: 170px; flex-shrink: 0; padding: 10px; }
 
     /* ── Left sidebar ────────────────────────────────────────────────────── */
-    .box-cittadino {
-        background:#fff; border:1px solid #ddd; border-top:3px solid #0066cc;
-        margin-bottom:14px;
-    }
-    .box-cittadino h3 {
-        background:#0066cc; color:#fff; font-size:11px; font-weight:700;
-        padding:9px 14px; margin:0; text-transform:uppercase; letter-spacing:.3px;
-    }
-    .box-cittadino ul { list-style:none; margin:0; padding:0; }
+    .box-cittadino { background: transparent; border: none; border-top: none; margin-bottom: 0; }
+    .box-cittadino h3 { display: none; }
+    .box-cittadino ul { list-style: none; margin: 0; padding: 0; }
     .box-cittadino ul li a {
-        display:block; padding:8px 14px; font-size:11px; color:#333;
-        text-decoration:none; border-bottom:1px solid #f0f0f0;
-        transition:background .15s,color .15s,padding-left .15s;
+        display: block; padding: 5px 12px 5px 20px; font-size: 12px; color: #333333;
+        text-decoration: none; border-bottom: 1px solid #dddddd;
     }
-    .box-cittadino ul li a:hover { background:#f0f5ff; padding-left:18px; color:#0066cc; }
-    .box-cittadino ul li.arrow a { color:#0066cc; font-weight:700; }
-    .box-cittadino ul li.arrow a::before { content:'▸ '; }
+    .box-cittadino ul li a:hover { background: rgba(0,0,0,.05); color: #1a5a9a; }
+    .box-cittadino ul li.arrow a { color: #1a5a9a; font-weight: 700; padding-left: 12px; }
+    .box-cittadino ul li.arrow a::before { content: '▶ '; font-size: 9px; }
 
     /* iPatente promo */
-    #ipatente { background:#fff; border:1px solid #ddd; overflow:hidden; }
-    #ipatente-immagine { text-align:center; overflow:hidden; }
-    .ipatente-img { width:100%; display:block; }
+    #ipatente { background: transparent; border: none; overflow: hidden; padding: 12px; text-align: center; }
+    #ipatente-immagine { text-align: center; overflow: hidden; }
+    .ipatente-img { width: 85%; max-width: 95px; display: block; margin: 0 auto; }
     .ipatente-badge {
-        position:absolute; top:8px; right:8px; background:#ff9900; color:#fff;
-        font-size:8px; font-weight:700; padding:2px 6px; border-radius:9px;
-        transform:rotate(12deg);
+        position: absolute; top: 8px; right: 8px; background: #e07020; color: #fff;
+        font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 8px;
     }
-    #ipatente-scarica { padding:10px 12px; }
-    #ipatente-scarica h2 { font-size:12px; color:#0066cc; margin-bottom:4px; font-weight:700; }
-    #ipatente-scarica p  { font-size:10px; color:#666; margin-bottom:8px; line-height:1.4; }
-    .store-badges { display:flex; flex-direction:column; gap:5px; margin-top:6px; }
-    .store-badges a { display:block; }
-    .store-badges img { width:100%; max-width:130px; height:auto; display:block; }
-    .store-btn {
-        display:block; background:#003d7a; color:#fff; text-decoration:none;
-        font-size:9px; padding:5px 8px; border-radius:2px; margin-bottom:4px;
-        text-align:center; transition:background .15s;
-    }
-    .store-btn:hover { background:#0066cc; }
+    #ipatente-scarica { padding: 8px 0; }
+    #ipatente-scarica h2 { font-size: 12px; color: #1a5a9a; margin-bottom: 4px; font-weight: 700; }
+    #ipatente-scarica p  { font-size: 10px; color: #444444; margin-bottom: 6px; line-height: 1.4; }
+    .store-badges { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+    .store-badges a { display: block; }
+    .store-badges img { width: 100%; max-width: 62px; height: auto; display: block; }
 
     /* ── Dashboard heading ───────────────────────────────────────────────── */
-    #dashboard-heading {
-        display:flex; align-items:center; gap:12px; margin-bottom:16px;
-        padding-bottom:10px; border-bottom:2px solid #0066cc;
-    }
+    #dashboard-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     #dashboard-heading h2 {
-        font-size:15px; color:#0066cc; font-weight:700; white-space:nowrap;
-        text-transform:uppercase; letter-spacing:.2px;
+        font-size: 20px; color: #1a6eb5; font-weight: 400;
+        white-space: nowrap; text-transform: none; letter-spacing: 0;
     }
     .dash-search {
-        flex:1; display:flex; border:1px solid #ccc; border-radius:2px;
-        overflow:hidden; background:#fff;
+        flex: 1; display: flex; border: 1px solid #999999; border-radius: 2px;
+        overflow: hidden; background: #fff;
     }
     .dash-search input {
-        flex:1; border:none; background:transparent;
-        padding:6px 10px; font-size:11px; outline:none; font-family:inherit;
+        flex: 1; border: none; background: transparent;
+        padding: 5px 8px; font-size: 12px; outline: none; font-family: inherit;
     }
     .dash-search button {
-        background:#0066cc; color:#fff; border:none;
-        padding:6px 10px; cursor:pointer; font-size:12px;
+        background: transparent; color: #555555; border: none;
+        border-left: 1px solid #cccccc; padding: 5px 8px; cursor: pointer; font-size: 13px;
     }
-    .btn-chiudi-menu {
-        background:#555; color:#fff; border:none; padding:6px 12px;
-        font-size:10px; font-weight:700; border-radius:2px; cursor:pointer;
-        white-space:nowrap; text-transform:uppercase; letter-spacing:.3px;
-        transition:background .15s;
-    }
-    .btn-chiudi-menu:hover { background:#333; }
+    .dash-search button:hover { background: #f0f0f0; }
 
-    /* ── Cards — top row: 3 info cards ──────────────────────────────────── */
-    .cards-row {
-        display:grid; grid-template-columns:repeat(3,1fr);
-        gap:14px; margin-bottom:14px;
-    }
-    /* bottom row: settings + call center */
-    .cards-row-2 {
-        display:grid; grid-template-columns:1fr 260px;
-        gap:14px; margin-bottom:14px;
-    }
-    .dash-card {
-        border-radius:3px; overflow:hidden;
-        box-shadow:0 1px 4px rgba(0,0,0,.10);
-        transition:transform .2s,box-shadow .2s; background:#fff;
-    }
-    .dash-card:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.15); }
-    .card-hd {
-        padding:16px 18px 18px; color:#fff;
-    }
-    .card-hd-title {
-        font-size:13px; font-weight:700; letter-spacing:.3px;
-        text-transform:uppercase; opacity:.9; margin-bottom:10px;
-    }
+    /* ── Cards — 3 stat cards ────────────────────────────────────────────── */
+    .cards-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .dash-card { border-radius: 4px; overflow: hidden; box-shadow: none; background: transparent; }
+    .dash-card:hover { transform: none; box-shadow: none; }
+    .card-hd { padding: 10px 12px 12px; color: #fff; }
+    .card-hd-title { font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: none; opacity: 1; margin-bottom: 8px; }
     .card-hd-num {
-        font-family:'Toriga','Titillium Web',Arial,sans-serif; font-size:72px; font-weight:900;
-        line-height:1; color:#fff; display:inline-block; margin-right:6px;
-        white-space:nowrap;
+        font-family: Arial, Helvetica, sans-serif; font-size: 48px; font-weight: 700;
+        line-height: 1; color: #fff; display: inline-block; margin-right: 4px; white-space: nowrap;
     }
-    .card-hd-unit {
-        font-size:16px; color:rgba(255,255,255,.82); vertical-align:bottom;
-        margin-bottom:8px; display:inline-block;
+    .card-hd-unit { font-size: 16px; font-weight: 700; color: #fff; vertical-align: middle; display: inline-block; }
+    .card-hd-num-date { font-size: 26px; font-weight: 700; color: #fff; }
+
+    /* Card background colors — flat */
+    .c-blue   .card-hd { background: #1a6eb5; }
+    .c-teal   .card-hd { background: #1a9090; }
+    .c-orange .card-hd { background: #e07020; }
+
+    /* Detail panels (card-bd) */
+    .card-bd {
+        background: #e8e4dc; border: 1px solid #cccccc; border-top: none;
+        border-radius: 0 0 2px 2px; padding: 8px 10px; min-height: 90px;
+        display: flex; flex-direction: column;
     }
-    .card-bd { padding:14px 18px 16px; }
-
-    .c-blue   .card-hd { background:#0066cc; }
-    .c-teal   .card-hd { background:#00929f; }
-    .c-orange .card-hd { background:#d97f00; }
-    .c-dark   .card-hd { background:#555; padding:10px 15px; }
-    .c-dark   .card-hd-title { font-size:11px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; opacity:1; margin-bottom:0; }
-    .card-hd-num-date { font-size:54px; }
-
-    .card-sub   { font-size:10px; color:#aaa; margin:6px 0 3px; }
-    .card-type  { font-size:11px; color:#333; font-weight:700; margin:6px 0 2px; }
-    .card-info  {
-        font-size:10px; color:#888; margin-bottom:10px; line-height:1.4;
-        overflow:hidden; display:-webkit-box;
-        -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    .card-sub  { font-size: 11px; color: #555555; margin: 0 0 4px; }
+    .card-type { font-size: 12px; color: #222222; font-weight: 700; margin: 0 0 2px; }
+    .card-info {
+        font-size: 11px; color: #444444; margin-bottom: 8px; line-height: 1.4; flex: 1;
+        overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     }
     .card-btn {
-        display:inline-block; background:transparent;
-        border:1px solid #ccc; color:#666;
-        font-size:10px; font-weight:700; cursor:pointer;
-        padding:4px 12px; font-family:inherit;
-        transition:border-color .15s, color .15s; text-align:center;
+        display: inline-block; background: #f0ece4; border: 1px solid #bbbbbb; color: #1a5a9a;
+        font-size: 11px; font-weight: 400; cursor: pointer; padding: 3px 8px;
+        font-family: inherit; align-self: flex-start; transition: background .15s;
     }
-    .card-btn:hover { border-color:#999; color:#333; }
+    .card-btn:hover { background: #e0dcd0; border-color: #999999; }
 
-    /* Settings items (in Impostazioni card) */
+    /* ── Right panel ─────────────────────────────────────────────────────── */
+    .impostazioni-block { background: #c8c0b0; padding: 8px 10px; margin-bottom: 10px; }
+    .impostazioni-title { font-size: 13px; font-weight: 700; font-style: italic; color: #222222; margin-bottom: 8px; }
     .settings-item {
-        display:flex; align-items:center; gap:10px; padding:10px 14px;
-        border-bottom:1px solid #eee; cursor:pointer; transition:background .15s;
-        background:#fff;
+        display: flex; align-items: center; gap: 8px; padding: 5px 0;
+        border-bottom: 1px solid #b8b0a0; cursor: pointer; background: transparent;
     }
-    .settings-item:last-child { border-bottom:none; }
-    .settings-item:hover { background:#f0f5ff; }
-    .settings-item a { color:#333; text-decoration:none; font-size:12px; font-weight:600; flex:1; }
-    .settings-item:hover a { color:#0066cc; }
-    .settings-ico { flex-shrink:0; display:flex; align-items:center; }
-    .c-dark .card-bd { padding:0; }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item a { color: #1a5a9a; text-decoration: none; font-size: 11px; font-weight: 400; flex: 1; }
+    .settings-item:hover a { color: #0a3a7a; }
+    .settings-ico {
+        flex-shrink: 0; width: 16px; height: 16px; background: #888888; border-radius: 2px;
+        display: flex; align-items: center; justify-content: center;
+    }
 
-    /* Call Center card */
     #call-center {
-        background:linear-gradient(140deg,#004a99 0%,#0066cc 100%);
-        color:#fff; border-radius:3px; padding:22px 20px;
-        text-align:center; height:100%; box-sizing:border-box;
+        background: #e8e4dc; border: 1px solid #cccccc; color: #333333;
+        padding: 8px 10px; text-align: left;
     }
     #call-center h3 {
-        font-size:11px; font-weight:700; text-transform:uppercase;
-        letter-spacing:.4px; margin-bottom:6px; opacity:.8;
+        font-size: 13px; font-weight: 700; font-style: italic; color: #333333;
+        margin-bottom: 6px; text-transform: none; opacity: 1; letter-spacing: 0;
     }
-    #call-center > p { font-size:11px; opacity:.85; margin-bottom:4px; }
+    #call-center > p { font-size: 11px; color: #444444; opacity: 1; margin-bottom: 4px; }
     #call-center-num {
-        font-size:26px; font-weight:900; color:#ff9900;
-        letter-spacing:2px; font-family:'Toriga',Arial,sans-serif;
-        margin:10px 0 8px;
+        font-size: 20px; font-weight: 700; color: #1a6eb5;
+        letter-spacing: 0; font-family: Arial, Helvetica, sans-serif; margin: 6px 0;
     }
-    .cc-hours { font-size:10px; line-height:1.8; opacity:.7; }
+    .cc-hours { font-size: 10px; color: #555555; line-height: 1.5; opacity: 1; }
 
     /* ── Modals ──────────────────────────────────────────────────────────── */
     .modal-ov {
-        display:none; position:fixed; inset:0;
-        background:rgba(0,0,0,.5); z-index:9999;
-        align-items:center; justify-content:center;
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,.5); z-index: 9999;
+        align-items: center; justify-content: center;
     }
-    .modal-ov.open { display:flex; }
+    .modal-ov.open { display: flex; }
     .modal-box {
-        background:#fff; border-radius:4px; width:92%; max-width:520px;
-        box-shadow:0 8px 32px rgba(0,0,0,.25); overflow:hidden;
+        background: #fff; border-radius: 4px; width: 92%; max-width: 520px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.2); overflow: hidden;
     }
     .modal-hd {
-        background:#0066cc; color:#fff; padding:12px 18px;
-        display:flex; align-items:center; justify-content:space-between;
+        background: #1a6eb5; color: #fff; padding: 12px 18px;
+        display: flex; align-items: center; justify-content: space-between;
     }
-    .modal-hd h3 { font-size:14px; font-weight:700; }
-    .modal-close { background:transparent; border:none; color:#fff; font-size:18px; cursor:pointer; line-height:1; }
-    .modal-close:hover { color:#ff9900; }
-    .modal-bd { padding:18px; max-height:70vh; overflow-y:auto; }
-    .dtable { width:100%; border-collapse:collapse; font-size:12px; }
-    .dtable th,.dtable td { padding:8px 12px; border-bottom:1px solid #eee; text-align:left; }
-    .dtable th { background:#f5f5f5; color:#555; font-weight:600; width:40%; }
-    .dtable thead th { background:#0066cc; color:#fff; font-weight:700; width:auto; }
-    .dtable tr:last-child th,.dtable tr:last-child td { border-bottom:none; }
+    .modal-hd h3 { font-size: 14px; font-weight: 700; }
+    .modal-close { background: transparent; border: none; color: #fff; font-size: 18px; cursor: pointer; line-height: 1; }
+    .modal-close:hover { color: #ffcc00; }
+    .modal-bd { padding: 18px; max-height: 70vh; overflow-y: auto; }
+    .dtable { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .dtable th, .dtable td { padding: 8px 12px; border-bottom: 1px solid #eee; text-align: left; }
+    .dtable th { background: #f5f5f5; color: #555; font-weight: 600; width: 40%; }
+    .dtable thead th { background: #1a6eb5; color: #fff; font-weight: 700; width: auto; }
+    .dtable tr:last-child th, .dtable tr:last-child td { border-bottom: none; }
 
-    /* ── Footer icon classes (replaces inline background-image on h3) ──────── */
-    .fc-patenti    { background-image:url('/pda-theme/images/pda/patenti-ico.png?2'); }
-    .fc-veicoli    { background-image:url('/pda-theme/images/pda/veicoli-ico.png?2'); }
-    .fc-servizi    { background-image:url('/pda-theme/images/pda/servizi-online-ico.png?2'); }
-    .fc-cds        { background-image:url('/pda-theme/images/pda/codice-della-strada-ico.png?2'); }
-    .fc-prof       { background-image:url('/pda-theme/images/pda/professionisti-ico.png?2'); }
-    .fc-auto       { background-image:url('/pda-theme/images/pda/autotrasporto-ico.png?2'); }
-    .fc-app        { background-image:url('/pda-theme/images/pda/app-mobile-ico.png?2'); }
-    .fc-iniziative { background-image:url('/pda-theme/images/pda/iniziative-ico.png?2'); }
+    /* ── Footer icon classes ─────────────────────────────────────────────── */
+    .fc-patenti    { background-image: url('/pda-theme/images/pda/patenti-ico.png?2'); }
+    .fc-veicoli    { background-image: url('/pda-theme/images/pda/veicoli-ico.png?2'); }
+    .fc-servizi    { background-image: url('/pda-theme/images/pda/servizi-online-ico.png?2'); }
+    .fc-cds        { background-image: url('/pda-theme/images/pda/codice-della-strada-ico.png?2'); }
+    .fc-prof       { background-image: url('/pda-theme/images/pda/professionisti-ico.png?2'); }
+    .fc-auto       { background-image: url('/pda-theme/images/pda/autotrasporto-ico.png?2'); }
+    .fc-app        { background-image: url('/pda-theme/images/pda/app-mobile-ico.png?2'); }
+    .fc-iniziative { background-image: url('/pda-theme/images/pda/iniziative-ico.png?2'); }
 
     /* ── Utility ─────────────────────────────────────────────────────────── */
-    .txt-justify { text-align:justify; }
+    .txt-justify { text-align: justify; }
+    ul.sub2 { z-index: 999999 !important; }
 
-    /* ── Nav dropdown z-index ────────────────────────────────────────────── */
-    ul.sub2 { z-index:999999 !important; }
-
-    /* ── Responsive / Mobile ─────────────────────────────────────────────── */
-    @media(max-width:960px){
-        .cards-row   { grid-template-columns:1fr 1fr; }
-        .cards-row-2 { grid-template-columns:1fr; }
+    /* ── Responsive ──────────────────────────────────────────────────────── */
+    @media(max-width: 960px) {
+        .cards-row { grid-template-columns: 1fr 1fr; }
+        #col-rt { display: none; }
     }
-
-    @media(max-width:700px){
-        /* top bar: stack nav links + login vertically */
-        #bar-serv .contenitore { padding:0; }
-        #menu-serv { float:none; width:100%; }
-        #menu-serv ul { flex-wrap:wrap; }
-        #menu-serv ul li { float:none; margin:0; }
-        #menu-serv ul li a.fNiv { padding:7px 10px; font-size:10px; }
-        #login { float:none !important; width:100% !important; background:transparent; }
-        #login-user { float:none !important; display:block; padding:6px 10px 2px; }
-        #btn-autenticato { float:none !important; padding:4px 10px 6px; gap:6px; }
-        .btn-top { padding:5px 10px; font-size:10px; }
-
-        /* hide hero banner on mobile to save space */
-        #visore-est { display:none; }
-
-        /* single-column layout */
-        #pagina > .contenitore { flex-direction:column; gap:12px; }
-        #col-sx { width:100%; order:2; }
-        #col-dx { order:1; width:100%; }
-
-        .cards-row   { grid-template-columns:1fr 1fr; gap:10px; }
-        .cards-row-2 { grid-template-columns:1fr; gap:10px; }
-        .card-hd-num { font-size:38px; }
-
-        /* make modals full-width on phone */
-        .modal-box { width:98%; max-width:none; border-radius:0; }
+    @media(max-width: 700px) {
+        #menu-serv ul li a.fNiv { font-size: 10px; }
+        #login { float: none !important; width: 100% !important; background: transparent; }
+        #login-user { float: none !important; display: block; padding: 6px 10px 2px; }
+        #btn-autenticato { float: none !important; padding: 4px 10px 6px; gap: 6px; }
+        .btn-top { padding: 5px 10px; font-size: 10px; }
+        #visore-est { display: none; }
+        #pagina > .contenitore { flex-direction: column; }
+        #col-sx { width: 100%; order: 2; min-height: 0; border-right: none; border-top: 1px solid #bbbbbb; }
+        #col-dx { order: 1; width: 100%; }
+        #col-rt { display: none; }
+        .cards-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .card-hd-num { font-size: 32px; }
+        .modal-box { width: 98%; max-width: none; border-radius: 0; }
     }
-
-    @media(max-width:420px){
-        .cards-row { grid-template-columns:1fr; }
+    @media(max-width: 420px) {
+        .cards-row { grid-template-columns: 1fr; }
     }
     </style>
 </head>
@@ -396,7 +327,7 @@
 
 <!-- ── Blue hero banner ────────────────────────────────────────────────────── -->
 <div id="visore-est" class="accordion">
-    <div id="visore"></div>
+    <div id="visore"><button type="button" class="btn-chiudi-menu">&#9650; CHIUDI MENU</button></div>
 </div>
 
 <div id="appsimplemenu">
@@ -428,17 +359,17 @@
         <!-- iPatente promo -->
         <div id="ipatente">
             <div id="ipatente-immagine">
-                <img src="/documents/56611/54481958/immagine+iPatente+PDA_xsm.jpg/474c8136-06bf-4005-821a-b7205c1394da?t=1599125163015" alt="iPatente app" class="ipatente-img"/>
+                <img src="/ilportaledellautomobilista/www.ilportaledellautomobilista.it/documents/56611/54481958/immagine+iPatente+PDA_xsm.jpg/immagine%20iPatente%20PDA_xsmd16b.jpg" alt="iPatente app" class="ipatente-img"/>
             </div>
             <div id="ipatente-scarica">
                 <h2>iPatente</h2>
                 <p>C'è un'applicazione che spiana la strada. <strong>Scaricala</strong></p>
                 <div class="store-badges">
                     <a href="https://play.google.com/store/apps/details?id=it.iwikiphone.portaleautomobilista2&hl=it" target="_blank">
-                        <img src="/documents/56611/57317/google_store_tn.png" alt="Scarica su Google Play"/>
+                        <img src="/ilportaledellautomobilista/www.ilportaledellautomobilista.it/documents/56611/57317/google_store_tn.png/google_store_tn76df.png" alt="Scarica su Google Play"/>
                     </a>
                     <a href="https://apps.apple.com/it/app/ipatente/id417705371" target="_blank">
-                        <img src="/documents/56611/57317/apple_store_tn.png" alt="Scarica su App Store"/>
+                        <img src="/ilportaledellautomobilista/www.ilportaledellautomobilista.it/documents/56611/57317/apple_store_tn.png/apple_store_tnbc4c.png" alt="Scarica su App Store"/>
                     </a>
                 </div>
             </div>
@@ -452,9 +383,8 @@
             <h2>Cittadino</h2>
             <div class="dash-search">
                 <input type="text" placeholder="Cerca...">
-                <button type="button">🔍</button>
+                <button type="button">&#128269;</button>
             </div>
-            <button type="button" class="btn-chiudi-menu">⊙ CHIUDI MENU</button>
         </div>
 
         <!-- Row 1: 3 main info cards -->
@@ -506,59 +436,57 @@
 
         </div><!-- /.cards-row -->
 
-        <!-- Row 2: Impostazioni + Call Center -->
-        <div class="cards-row-2">
-
-            <!-- Impostazioni -->
-            <div class="dash-card c-dark">
-                <div class="card-hd"><div class="card-hd-title">Impostazioni</div></div>
-                <div class="card-bd">
-                    <div class="settings-item">
-                        <span class="settings-ico">
-                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="8" width="11" height="8" rx="1.5"/>
-                                <path d="M5.5 8V6A3 3 0 0 1 11.5 6V8"/>
-                                <circle cx="8.5" cy="12" r="1" fill="#0066cc" stroke="none"/>
-                            </svg>
-                        </span>
-                        <a href="#">Modifica password</a>
-                    </div>
-                    <div class="settings-item">
-                        <span class="settings-ico">
-                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="8.5" cy="5.5" r="3"/>
-                                <path d="M2 15c0-3.6 2.9-6.5 6.5-6.5S15 11.4 15 15"/>
-                            </svg>
-                        </span>
-                        <a href="#">Modifica dati</a>
-                    </div>
-                    <div class="settings-item">
-                        <span class="settings-ico">
-                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="#0066cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M8.5 2A4.5 4.5 0 0 0 4 6.5V10L2.5 12.5h12L13 10V6.5A4.5 4.5 0 0 0 8.5 2z"/>
-                                <path d="M7 12.5a1.5 1.5 0 0 0 3 0"/>
-                            </svg>
-                        </span>
-                        <a href="#">Notifiche ricevute</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Call Center -->
-            <div id="call-center">
-                <h3>Call Center</h3>
-                <p>Il tuo codice identificativo per il Call Center è</p>
-                <div id="call-center-num">—</div>
-                <p class="cc-hours">
-                    Il servizio è attivo dal Lunedì al Venerdì<br>
-                    dalle 8:00 alle 20:00 e il Sabato<br>
-                    dalle 8:00 alle 14:00
-                </p>
-            </div>
-
-        </div><!-- /.cards-row-2 -->
-
     </div><!-- /#col-dx -->
+
+    <!-- Right panel -->
+    <div id="col-rt">
+
+        <!-- Impostazioni -->
+        <div class="impostazioni-block">
+            <div class="impostazioni-title">Impostazioni</div>
+            <div class="settings-item">
+                <span class="settings-ico">
+                    <svg width="10" height="10" viewBox="0 0 17 17" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="8" width="11" height="8" rx="1.5"/>
+                        <path d="M5.5 8V6A3 3 0 0 1 11.5 6V8"/>
+                    </svg>
+                </span>
+                <a href="#">Modifica password</a>
+            </div>
+            <div class="settings-item">
+                <span class="settings-ico">
+                    <svg width="10" height="10" viewBox="0 0 17 17" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8.5" cy="5.5" r="3"/>
+                        <path d="M2 15c0-3.6 2.9-6.5 6.5-6.5S15 11.4 15 15"/>
+                    </svg>
+                </span>
+                <a href="#">Modifica dati</a>
+            </div>
+            <div class="settings-item">
+                <span class="settings-ico">
+                    <svg width="10" height="10" viewBox="0 0 17 17" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8.5 2A4.5 4.5 0 0 0 4 6.5V10L2.5 12.5h12L13 10V6.5A4.5 4.5 0 0 0 8.5 2z"/>
+                        <path d="M7 12.5a1.5 1.5 0 0 0 3 0"/>
+                    </svg>
+                </span>
+                <a href="#">Notifiche ricevute</a>
+            </div>
+        </div>
+
+        <!-- Call Center -->
+        <div id="call-center">
+            <h3>Call Center</h3>
+            <p>Il tuo codice identificativo per il Call Center è</p>
+            <div id="call-center-num">—</div>
+            <p class="cc-hours">
+                Il servizio è attivo dal Lunedì al Venerdì<br>
+                dalle 8:00 alle 20:00 e il Sabato<br>
+                dalle 8:00 alle 14:00
+            </p>
+        </div>
+
+    </div><!-- /#col-rt -->
+
 </div><!-- /.contenitore -->
 </div><!-- /#pagina -->
 
